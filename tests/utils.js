@@ -99,6 +99,7 @@ exports.closeApp = async () => {
 
 exports.createDocWithDataForType = async (type, data) => {
 	let Model;
+	const { Client, Vet } = Models;
 	switch (type) {
 		case 'client':
 			Model = Client;
