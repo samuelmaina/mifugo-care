@@ -2,10 +2,9 @@ const request = require('supertest');
 
 const { Client, Vet } = require('../../../models');
 
-const { clearDb, hashPassword } = require('../../utils');
+const { clearDb, startApp, createDocWithDataForType } = require('../../utils');
 const PORT = 3420;
 
-const { includeSetUpAndTeardown } = require('../utils');
 const data = {
 	name: 'John Doe',
 	email: 'johndoe@email.com',
@@ -86,31 +85,6 @@ exports.authTest = function (type) {
 		return await request(app).post(url).send(body);
 	}
 };
-
-async function createDocWithDataForType(type, data) {
-	let Model;
-	switch (type) {
-		case 'client':
-			Model = Client;
-			break;
-		case 'vet':
-			Model = Vet;
-			break;
-
-		default:
-			break;
-	}
-	const password = await hashPassword(data.password);
-
-	let doc;
-	doc = new Model({
-		name: data.name,
-		email: data.email,
-		password,
-	});
-	doc = await doc.save();
-	return doc;
-}
 
 function ensureResHasStatusCodeAndFieldData(res, statusCode, field, value) {
 	expect(res.status).toBe(statusCode);
