@@ -1,0 +1,119 @@
+body {
+	font-size: 16px;
+	font-family: Georgia, serif;
+}
+h1 {
+	text-align: center;
+	font-family: Proxima Nova, Arial, 'sans-serif';
+	font-weight: 300;
+	font-size: 36px;
+	color: #353851;
+	line-height: 44px;
+	margin-bottom: 24px;
+}
+.app {
+	position: absolute;
+	top: 120px;
+	left: 25vw;
+	width: 50vw;
+	display: flex;
+	flex-direction: row;
+}
+.form-div {
+	width: 60%;
+}
+.div-aside {
+	width: 40%;
+	border-left: 1px solid;
+	border-radius: 2px;
+}
+.div-aside p {
+	text-align: center;
+}
+.common div {
+	margin: 0 0 30px 25%;
+	padding-bottom: 20px;
+}
+.common div span {
+	color: #00008b;
+}
+.loginSpan {
+	color: rgb(37, 48, 100);
+	font-size: 3rem;
+	width: 100%;
+}
+.app form div input {
+	margin-bottom: 20px;
+	height: 45px;
+	width: 90%;
+	border: 1px solid;
+	border-radius: 5px;
+}
+form span {
+	font-size: 1rem;
+}
+.floated_to_right {
+	float: right;
+	margin-right: 2.5rem;
+}
+.button-signin {
+	margin: 1.2rem 10%;
+	height: 40px;
+	width: 70%;
+	background-color: green;
+}
+.button_next {
+	float: right;
+	margin-right: 2.2rem;
+	height: 40px;
+	width: 20%;
+	background-color: green;
+}
+.button_prev {
+	height: 40px;
+	width: 20%;
+	background-color: green;
+}
+.app form select {
+	margin-bottom: 20px;
+	height: 50px;
+	width: 91%;
+	border: 1px solid;
+	border-radius: 5px;
+}
+.svg_c {
+	width: 100%;
+	height: 90vh;
+}
+.populated {
+	width: 25%;
+	margin: 2rem;
+}
+.populated p {
+	color: green;
+	font-size: 1.5rem;
+}
+.populated ul {
+	list-style-type: none;
+}
+.populated ul li {
+	background-color: hsl(0, 0%, 98%);
+	padding: 0.5px 0.5rem;
+	margin-top: 0.5rem;
+	height: 2rem;
+	border-radius: 5px;
+}
+.errorField {
+	color: red;
+}
+form button {
+	height: 40px;
+	width: 20%;
+	border: 1px solid;
+	border-radius: 5px;
+	cursor: pointer;
+	background-color: white;
+}
+form button:hover {
+	background-color: green;
+}
