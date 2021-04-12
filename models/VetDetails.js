@@ -1,14 +1,15 @@
 const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
+const { Schema, Types } = mongoose;
+const { ObjectId } = Types;
 
 const VetDetails = new Schema({
-    personal_details_id:{
-		type: mongoose.Types.ObjectId;
-		required:true,
-		ref:'Vet',
+	personal_details_id: {
+		type: ObjectId,
+		required: true,
+		ref: 'Vet',
 	},
-	yearsOfExperience: {
-		type: String,
+	experience: {
+		type: Number,
 		required: true,
 	},
 	location: {
@@ -20,11 +21,26 @@ const VetDetails = new Schema({
 		type: String,
 		required: true,
 	},
+	speciality: {
+		type: Array,
+		required: true,
+	},
 });
 
 const { statics, methods } = VetDetails;
 statics.addDetails = async function (data) {
-	return await this.create(data);
+	const details = { ...data };
+	details.personal_details_id = data.id;
+	return await this.create(details);
+};
+methods.editDetails = async function (details) {
+	for (const field in details) {
+		await this.editField(field, details[field]);
+	}
+};
+methods.editField = async function (field, data) {
+	this[field] = data;
+	return await this.save();
 };
 
 module.exports = mongoose.model('VetDetails', VetDetails);
