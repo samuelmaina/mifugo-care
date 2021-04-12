@@ -32,7 +32,6 @@ exports.postLogin = async function (req, res, next) {
 		const { email, password } = body;
 
 		const details = await findOneWithCredentialsByType(type, email, password);
-
 		if (details) {
 			const payload = {
 				id: details.id,
