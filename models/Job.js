@@ -6,7 +6,6 @@ const ObjectId = Types.ObjectId;
 const Job = new Schema({
 	vet_id: {
 		type: ObjectId,
-		required: true,
 		ref: 'Vet',
 	},
 	client_id: {
@@ -23,7 +22,23 @@ const Job = new Schema({
 	},
 	amount: {
 		type: Number,
+	},
+	speciality: {
+		type: String,
+		minlength: 2,
+		maxlength: 10,
+	},
+	description: {
+		type: String,
 		required: true,
+		minlength: 5,
+		maxlength: 200,
+	},
+	imageUrl: {
+		type: String,
+		required: true,
+		maxlength: 30,
+		minlength: 10,
 	},
 });
 
