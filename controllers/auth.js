@@ -1,24 +1,25 @@
 const { Client, Vet } = require('../models');
-const jwt = require('jsonwebtoken');
-
-const { SESSION_SECRET } = require('../config/env');
+const { auth } = require('../services');
+const { Responder } = require('../utils');
 
 exports.postSignUp = async function (req, res, next) {
 	try {
+		const responder = new Responder(res);
 		const { body, params } = req;
 		const { email } = body;
 		const { type } = params;
-		const existingEmail = await findEmainByType(email, type);
-		if (existingEmail) {
-			const error = 'Email already exists.Please try another one.';
-			return res.status(401).json({
-				error,
-			});
+		const exists = await findEmailByType(email, type);
+		if (exists) {
+			return responder
+				.withStatusCode(401)
+				.withError('Email already exists.Please try another one.')
+				.send();
 		}
 		await createOneForType(body, type);
-		return res.status(201).json({
-			message: 'Successfully signed up.',
-		});
+		return responder
+			.withStatusCode(201)
+			.withMessage('Successfully signed up.')
+			.send();
 	} catch (error) {
 		next(error);
 	}
@@ -26,7 +27,8 @@ exports.postSignUp = async function (req, res, next) {
 
 exports.postLogin = async function (req, res, next) {
 	try {
-		const expiryTimeInSeconds = 3600;
+		const responder = new Responder(res);
+		const { loginIn } = auth;
 		const { body, params } = req;
 		const type = params.type;
 		const { email, password } = body;
@@ -36,23 +38,23 @@ exports.postLogin = async function (req, res, next) {
 			const payload = {
 				id: details.id,
 			};
-
-			jwt.sign(
-				payload,
-				SESSION_SECRET,
-				{ expiresIn: expiryTimeInSeconds },
-				(err, token) => {
+			const cb = (err, token) => {
+				try {
 					if (err) return next(err);
-					return res.status(201).json({
+					const data = {
 						success: true,
 						token: 'Bearer ' + token,
-					});
+					};
+					responder.withStatusCode(201).withData(data).send();
+				} catch (error) {
+					next(error);
 				}
-			);
-		} else
-			return res.status(404).json({
-				error: 'Invalid Email or Password',
-			});
+			};
+			return loginIn(payload, cb);
+		}
+		return res.status(404).json({
+			error: 'Invalid Email or Password',
+		});
 	} catch (error) {
 		next(error);
 	}
@@ -60,7 +62,7 @@ exports.postLogin = async function (req, res, next) {
 
 const client = 'client';
 const vet = 'vet';
-async function findEmainByType(email, type) {
+async function findEmailByType(email, type) {
 	switch (type) {
 		case client:
 			return await Client.findByEmail(email);
@@ -69,7 +71,7 @@ async function findEmainByType(email, type) {
 			return await Vet.findByEmail(email);
 			break;
 		default:
-			return null;
+			throw new Error('Invalid type');
 			break;
 	}
 }
@@ -83,7 +85,7 @@ async function findOneWithCredentialsByType(type, email, password) {
 			return await Vet.findOneWithCredentials(email, password);
 			break;
 		default:
-			return null;
+			throw new Error('Invalid type');
 			break;
 	}
 }
@@ -97,7 +99,7 @@ async function createOneForType(body, type) {
 			return await Vet.createOne(body);
 			break;
 		default:
-			return null;
+			throw new Error('Invalid type');
 			break;
 	}
 }
