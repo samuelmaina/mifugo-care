@@ -1,0 +1,1 @@
+exports.Responder = require('./Responder');
