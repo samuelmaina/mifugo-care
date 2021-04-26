@@ -33,6 +33,10 @@ statics.addDetails = async function (data) {
 	details.personal_details_id = data.id;
 	return await this.create(details);
 };
+statics.findByVetId = async function (vet_id) {
+	return await this.findOne({ personal_details_id: vet_id });
+};
+
 methods.editDetails = async function (details) {
 	for (const field in details) {
 		await this.editField(field, details[field]);
