@@ -1,17 +1,19 @@
+const { Responder } = require('../utils');
+
 const { VetDetails } = require('../models');
 
 exports.postAddDetails = async (req, res, next) => {
 	try {
+		const responder = new Responder(res);
+		//one can not change the logged in object to vet.it is always called user.
 		const { user, body } = req;
-		const data = { ...body };
-
-		const id = user.id;
-		data.id = id;
-
-		await VetDetails.addDetails(data);
-		res.status(201).json({
-			message: 'Vet creation successful.',
-		});
+		const { id, name } = user;
+		body.id = id;
+		await VetDetails.addDetails(body);
+		responder
+			.withStatusCode(201)
+			.withMessage(`Dear ${name}, Vet details added successfully.`);
+		responder.send();
 	} catch (error) {
 		next(error);
 	}
@@ -19,16 +21,13 @@ exports.postAddDetails = async (req, res, next) => {
 
 exports.postEditDetails = async (req, res, next) => {
 	try {
+		const responder = new Responder(res);
 		const { user, body } = req;
-		const data = { ...body };
-		const id = user.id;
-		data.id = id;
-
-		const details = await VetDetails.findOne({ personal_details_id: id });
-		await details.editDetails(data);
-		res.status(201).json({
-			message: 'Updated details successfullly.',
-		});
+		const { id, name } = user;
+		const message = `Dear ${name}, Vet details updated successfully.`;
+		const details = await VetDetails.findByVetId(id);
+		await details.editDetails(body);
+		return responder.withStatusCode(201).withMessage(message).send();
 	} catch (error) {
 		next(error);
 	}
