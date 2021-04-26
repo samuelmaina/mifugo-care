@@ -1,15 +1,15 @@
-const { startApp, closeApp } = require('../utils');
+const {
+	ensureEqual,
+	ensureObjectHasKeyValuePair,
+	ensureObjectHasProp,
+} = require('../testUtil');
 
-const PORT = 3420;
-exports.includeSetUpAndTeardown = () => {
-	let app;
-	beforeAll(async () => {
-		app = await startApp(PORT);
-	});
-	afterAll(async () => {
-		await closeApp();
-	});
-	console.log('did all the above.');
-	console.log(app);
-	return app;
+exports.ensureResHasStatusCodeAndFieldData = (res, statusCode, key, value) => {
+	ensureEqual(res.status, statusCode);
+	ensureObjectHasKeyValuePair(res.body, key, value);
+};
+
+exports.ensureResHasStatusCodeAndProp = (res, statusCode, prop) => {
+	ensureEqual(res.status, statusCode);
+	ensureObjectHasProp(res.body, prop);
 };

@@ -1,8 +1,20 @@
 const request = require('supertest');
+const {
+	ensureValueGreaterThanOrEqual,
+	ensureEqual,
+} = require('../../testUtil');
 
-const { Client, Vet } = require('../../../models');
+const {
+	clearDb,
+	startApp,
+	closeApp,
+	createDocWithDataForType,
+} = require('../../utils');
+const {
+	ensureResHasStatusCodeAndFieldData,
+	ensureResHasStatusCodeAndProp,
+} = require('../utils');
 
-const { clearDb, startApp, createDocWithDataForType } = require('../../utils');
 const PORT = 3420;
 
 const data = {
@@ -20,10 +32,10 @@ exports.authTest = function (type) {
 	afterAll(async () => {
 		await closeApp();
 	});
-
 	afterEach(async () => {
 		await clearDb();
 	});
+
 	describe(`postSignUp`, () => {
 		const signUpUrl = `/auth/sign-up/${type}`;
 		it('should sign up for valid data', async () => {
@@ -46,7 +58,7 @@ exports.authTest = function (type) {
 	describe('postLogin', () => {
 		const loginUrl = `/auth/log-in/${type}`;
 		beforeAll(async () => {
-			//to simulate sign up .
+			//to simulate sign up.
 			await createDocWithDataForType(type, data);
 		});
 		afterAll(async () => {
@@ -56,10 +68,10 @@ exports.authTest = function (type) {
 			const res = await makePostRequest(loginUrl, data);
 			ensureResHasStatusCodeAndProp(res, 201, 'token');
 			const token = res.body.token;
-			expect(token.length).toBeGreaterThan(40);
+			ensureValueGreaterThanOrEqual(token.length, 41);
 			//ensure that the token has bearer in front.
 			const bearer = token.slice(0, 6);
-			expect(bearer).toBe('Bearer');
+			ensureEqual(bearer, 'Bearer');
 		});
 		it('should return error if email is incorrect', async () => {
 			const invalid = {
@@ -85,12 +97,3 @@ exports.authTest = function (type) {
 		return await request(app).post(url).send(body);
 	}
 };
-
-function ensureResHasStatusCodeAndFieldData(res, statusCode, field, value) {
-	expect(res.status).toBe(statusCode);
-	expect(res.body).toHaveProperty(field, value);
-}
-function ensureResHasStatusCodeAndProp(res, statusCode, prop) {
-	expect(res.status).toBe(statusCode);
-	expect(res.body).toHaveProperty(prop);
-}

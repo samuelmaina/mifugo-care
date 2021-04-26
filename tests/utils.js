@@ -122,3 +122,7 @@ exports.createDocWithDataForType = async (type, data) => {
 	doc = await doc.save();
 	return doc;
 };
+
+exports.generateRandomMongooseId = () => {
+	return mongoose.Types.ObjectId();
+};

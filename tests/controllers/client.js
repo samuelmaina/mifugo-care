@@ -1,11 +1,4 @@
 const request = require('supertest');
-const { vet } = require('../../controllers');
-const { VetDetails } = require('../../models');
-const {
-	ensureEqual,
-	ensureObjectsHaveSameValuesForProps,
-	ensureArrayHasElement,
-} = require('../testUtil');
 
 const {
 	clearDb,
@@ -24,7 +17,7 @@ const data = {
 	password: 'Pa55word??',
 };
 
-describe('Vet', () => {
+describe.skip('Vet', () => {
 	let token;
 
 	beforeAll(async () => {
@@ -38,39 +31,30 @@ describe('Vet', () => {
 	});
 
 	it('should refuse when user not logged in', async () => {
-		const url = '/vet/add-details';
+		const url = '/client/post-job';
 		token = 'Bearer abkljrklejklejrkljeklrejjrklejr';
-		const res = await makePostRequest(url, {});
-		ensureEqual(res.status, 401);
+		const res2 = await makePostRequest(url, {});
+		expect(res2.status).toBe(401);
 	});
 
 	describe('when logged in ', () => {
-		let vet_id;
-		let name;
-		const details = {
-			experience: 5,
-			location: { logitude: 3, latitude: 4 },
-			linkedInUrl: '/linkedIn/username1/newLinkedIn',
-			speciality: ['cats', 'cows', 'goats'],
-		};
 		beforeEach(async () => {
-			const type = 'vet';
+			const type = 'client';
 			const doc = await createDocWithDataForType(type, data);
-			vet_id = doc.id;
-			name = doc.name;
 			const loginUrl = `/auth/log-in/${type}`;
 			const res = await request(app).post(loginUrl).send(data);
 			token = res.body.token;
 		});
-		it('should create new vet', async () => {
-			const url = '/vet/add-details';
+		it.only('should create post new job', async () => {
+			const url = '/vet/post-job';
+			const details = {};
 
 			const res = await makePostRequest(url, details);
 			ensureResHasStatusCodeAndFieldData(
 				res,
 				201,
 				'message',
-				`Dear ${name}, Vet details added successfully.`
+				'Job Posted successfully'
 			);
 		});
 
@@ -86,7 +70,7 @@ describe('Vet', () => {
 					experience: 5,
 					location: { logitude: 3, latitude: 4 },
 
-					linkedInUrl: '/linkedIn/username3455/newLinkedIn',
+					linkedInUrl: '/linkedIn/username1/newLinkedIn',
 					speciality: ['sheep', 'cows', 'goats'],
 				};
 
@@ -95,12 +79,13 @@ describe('Vet', () => {
 					res,
 					201,
 					'message',
-					`Dear ${name}, Vet details updated successfully.`
+					'Details updated successfully.'
 				);
 				const vetData = await VetDetails.findOne({
 					personal_details_id: vet_id,
 				});
-				ensureArrayHasElement(vetData.speciality, 'sheep');
+				expect(vetData.speciality).toContain('sheep');
+				expect(vetData.linkedInUrl).toBe(details.linkedInUrl);
 			});
 		});
 	});

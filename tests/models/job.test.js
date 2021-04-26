@@ -1,22 +1,18 @@
 const { Job } = require('../../models');
-const { vet } = require('../../routes');
-const { validIDs } = require('../testUtil');
+const {
+	ensureObjectsHaveSameValuesForProps,
+	ensureEqual,
+	ensureIsTruthy,
+} = require('../testUtil');
 
 const {
 	includeSetUpAndTearDown,
 	clearModel,
-	createDocWithDataForType,
+	generateRandomMongooseId,
 	clearDb,
 } = require('../utils');
 
-const MAX_SETUP_TIME_IN_MS = 20000;
-const creds = {
-	name: 'trial vet 1',
-	email: 'example@email.com',
-	password: ' Pa55word??>',
-};
-
-describe.skip('Job', () => {
+describe('Job', () => {
 	includeSetUpAndTearDown();
 	describe('Job', () => {
 		let vet_id;
@@ -26,16 +22,17 @@ describe.skip('Job', () => {
 			await clearModel(Job);
 		});
 		beforeAll(async () => {
-			vet_id = (await createDocWithDataForType('vet', creds)).id;
-			client_id = (await createDocWithDataForType('client', creds)).id;
+			vet_id = generateRandomMongooseId();
+			client_id = generateRandomMongooseId();
 			data = {
 				vet_id,
 				client_id,
 				location: {
-					county: 'County1',
-					subCountry: 'sub county 1',
-					location: 'location',
+					latitude: 3,
+					longitude: 4,
 				},
+				imageUrl: '/path/to/image.jpg',
+				description: 'The cow very unhealthy. ',
 				amount: 1000,
 			};
 		});
@@ -44,20 +41,16 @@ describe.skip('Job', () => {
 		});
 		it('createOne', async () => {
 			const doc = await Job.createOne(data);
-			validIDs(doc.vet_id, data.vet_id);
-			validIDs(doc.client_id, data.client_id);
-			expect(doc.location).toBe(data.location);
-			expect(doc.amount).toBe(data.amount);
+			const props = ['vet_id', 'client_id', 'location', 'amount'];
+			ensureObjectsHaveSameValuesForProps(props, doc, data);
 		});
 
 		describe('statics', () => {
 			it('findAllForVetId', async () => {
-				await Job.createOne(data);
-				await Job.createOne(data);
-				await Job.createOne(data);
-
+				const trials = 50;
+				for (let i = 0; i < trials; i++) await Job.createOne(data);
 				const docs = await Job.findAllForVetId(data.vet_id);
-				expect(docs.length).toBe(3);
+				ensureEqual(docs.length, trials);
 			});
 		});
 		describe('methods', () => {
@@ -67,16 +60,7 @@ describe.skip('Job', () => {
 			});
 			it('should mark a job as paid', async () => {
 				await doc.markAsPaid();
-				expect(doc.isPaid).toBeTruthy();
-			});
-			it('should mark a job as paid', async () => {
-				await doc.markAsPaid();
-				expect(doc.isPaid).toBeTruthy();
-			});
-			it('should delete a job', async () => {
-				const docId = doc.id;
-				await doc.delete();
-				expect(await Job.findById(docId)).toBeNull();
+				ensureIsTruthy(doc.isPaid);
 			});
 		});
 	});
