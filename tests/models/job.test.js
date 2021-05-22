@@ -3,6 +3,7 @@ const {
 	ensureObjectsHaveSameValuesForProps,
 	ensureEqual,
 	ensureIsTruthy,
+	ensureIdsAreEqual,
 } = require('../testUtil');
 
 const {
@@ -12,7 +13,7 @@ const {
 	clearDb,
 } = require('../utils');
 
-describe('Job', () => {
+describe.skip('Job', () => {
 	includeSetUpAndTearDown();
 	describe('Job', () => {
 		let vet_id;
@@ -41,7 +42,7 @@ describe('Job', () => {
 		});
 		it('createOne', async () => {
 			const doc = await Job.createOne(data);
-			const props = ['vet_id', 'client_id', 'location', 'amount'];
+			const props = ['vet_id', 'client_id', 'location', 'amount', 'imageUrl'];
 			ensureObjectsHaveSameValuesForProps(props, doc, data);
 		});
 
@@ -58,9 +59,19 @@ describe('Job', () => {
 			beforeEach(async () => {
 				doc = await Job.createOne(data);
 			});
+			it('should set amount', async () => {
+				const amount = 5000;
+				await doc.setAmount(amount);
+				ensureEqual(doc.amount, amount);
+			});
 			it('should mark a job as paid', async () => {
 				await doc.markAsPaid();
 				ensureIsTruthy(doc.isPaid);
+			});
+			it('should set vet_id for a job', async () => {
+				const vet_id = generateRandomMongooseId();
+				await doc.setVetId(vet_id);
+				ensureIdsAreEqual(vet_id, doc.vet_id);
 			});
 		});
 	});

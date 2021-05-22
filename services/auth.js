@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const expiryTimeInSeconds = 3600;
+const expiryTimeInSeconds = 300;
 
 const { SESSION_SECRET } = require('../config/env');
 

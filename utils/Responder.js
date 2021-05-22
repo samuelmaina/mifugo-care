@@ -18,6 +18,9 @@ class Responder {
 		this.data = data;
 		return this;
 	}
+	redirect(url) {
+		return this.res.redirect(url);
+	}
 	send() {
 		const { msg, err, data, res, status } = this;
 		rejectIfIsNullOrUndefined(res, 'res');

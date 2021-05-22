@@ -52,9 +52,7 @@ exports.postLogin = async function (req, res, next) {
 			};
 			return loginIn(payload, cb);
 		}
-		return res.status(404).json({
-			error: 'Invalid Email or Password',
-		});
+		responder.withStatusCode(401).withError('Invalid Email or Password').send();
 	} catch (error) {
 		next(error);
 	}

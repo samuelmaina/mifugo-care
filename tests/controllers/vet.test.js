@@ -1,10 +1,11 @@
 const request = require('supertest');
-const { vet } = require('../../controllers');
-const { VetDetails } = require('../../models');
+
+const { VetDetails, Job, JobPull } = require('../../models');
+
 const {
 	ensureEqual,
-	ensureObjectsHaveSameValuesForProps,
 	ensureArrayHasElement,
+	ensureIdsAreEqual,
 } = require('../testUtil');
 
 const {
@@ -12,9 +13,13 @@ const {
 	startApp,
 	closeApp,
 	createDocWithDataForType,
+	generateRandomMongooseId,
 } = require('../utils');
 
-const { ensureResHasStatusCodeAndFieldData } = require('./utils');
+const {
+	ensureResHasStatusCodeAndFieldData,
+	ensureResHasStatusCodeAndProp,
+} = require('./utils');
 
 const PORT = 3420;
 
@@ -24,7 +29,7 @@ const data = {
 	password: 'Pa55word??',
 };
 
-describe('Vet', () => {
+describe.skip('Vet', () => {
 	let token;
 
 	beforeAll(async () => {
@@ -102,10 +107,120 @@ describe('Vet', () => {
 				});
 				ensureArrayHasElement(vetData.speciality, 'sheep');
 			});
+			it('should add job to job pool', async () => {
+				const url = '/vet/add-to-pull';
+				const job = await generateJob();
+				const body = {
+					job_id: job.id,
+				};
+
+				const res = await makePostRequest(url, body);
+				ensureResHasStatusCodeAndFieldData(
+					res,
+					201,
+					'message',
+					`Job successfully added to pool.`
+				);
+			});
+			it('should add remove job from pool', async () => {
+				const trails = 10;
+				const url = '/vet/remove-from-pull';
+
+				const jobIds = [];
+				for (let i = 0; i < trails; i++) {
+					jobIds.push(generateRandomMongooseId());
+				}
+
+				const body = {
+					job_id: jobIds[0],
+				};
+				await JobPull.createOne({ vet_id, jobIds });
+				const res = await makePostRequest(url, body);
+				ensureResHasStatusCodeAndFieldData(
+					res,
+					201,
+					'message',
+					`Job successfully removed from pool.`
+				);
+			});
+
+			it('should set Price for a job', async () => {
+				const url = '/vet/set-job-price';
+				const job = await generateJob();
+
+				const body = {
+					job_id: job.id,
+				};
+
+				const res = await makePostRequest(url, body);
+				ensureResHasStatusCodeAndFieldData(
+					res,
+					201,
+					'message',
+					`Job price set successfully.`
+				);
+			});
+			it('should view all jobs', async () => {
+				const trials = 50;
+				const url = '/vet/view-all-jobs';
+				await generateJobsForVetId(vet_id, trials);
+				const res = await makeGetRequest(url);
+				ensureResHasStatusCodeAndProp(res, 201, 'jobs');
+				const resJobs = res.body.jobs;
+				ensureEqual(trials, resJobs.length);
+				resJobs.forEach(element => {
+					ensureIdsAreEqual(element.vet_id, vet_id);
+				});
+			});
 		});
 	});
 
 	async function makePostRequest(url, body) {
 		return await request(app).post(url).set('Authorization', token).send(body);
+	}
+	async function makeGetRequest(url) {
+		return await request(app).get(url).set('Authorization', token);
+	}
+	async function generateJob() {
+		const client_id = generateRandomMongooseId();
+		const data = {
+			client_id,
+			location: generateLocation(),
+			imageUrl: '/path/to/image.jpg',
+			description: 'The cow  looks very unhealthy. ',
+		};
+		return await Job.createOne(data);
+	}
+	async function generateJobsForVetIds(vet_ids) {
+		for (const vet_id of vet_ids) {
+			const client_id = generateRandomMongooseId();
+			const data = {
+				client_id,
+				vet_id,
+				location: generateLocation(),
+				imageUrl: '/path/to/image.jpg',
+				description: 'The cow  looks very unhealthy. ',
+			};
+			await Job.createOne(data);
+		}
+	}
+	async function generateJobsForVetId(vet_id, trials) {
+		for (let i = 0; i < trials; i++) {
+			const client_id = generateRandomMongooseId();
+			const data = {
+				client_id,
+				vet_id,
+				location: generateLocation(),
+				imageUrl: '/path/to/image.jpg',
+				description: 'The cow  looks very unhealthy. ',
+			};
+			await Job.createOne(data);
+		}
+	}
+	function generateLocation() {
+		return {
+			latitude: Math.ceil(Math.random() * 20),
+			longitude: Math.ceil(Math.random() * 20),
+		};
 	}
 });

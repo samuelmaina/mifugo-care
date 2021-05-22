@@ -1,6 +1,6 @@
-const bodyParser = require('body-parser');
+const express = require('express');
 
-const { urlencoded, json } = bodyParser;
+const { urlencoded, json } = express;
 module.exports = app => {
 	const conf = urlencoded({
 		extended: false,

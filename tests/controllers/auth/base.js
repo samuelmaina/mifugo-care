@@ -56,7 +56,7 @@ exports.authTest = function (type) {
 		});
 	});
 	describe('postLogin', () => {
-		const loginUrl = `/auth/log-in/${type}`;
+		const url = `/auth/log-in/${type}`;
 		beforeAll(async () => {
 			//to simulate sign up.
 			await createDocWithDataForType(type, data);
@@ -65,7 +65,7 @@ exports.authTest = function (type) {
 			await clearDb();
 		});
 		it('should login for correct data', async () => {
-			const res = await makePostRequest(loginUrl, data);
+			const res = await makePostRequest(url, data);
 			ensureResHasStatusCodeAndProp(res, 201, 'token');
 			const token = res.body.token;
 			ensureValueGreaterThanOrEqual(token.length, 41);
@@ -79,8 +79,8 @@ exports.authTest = function (type) {
 				password: data.password,
 			};
 			const error = 'Invalid Email or Password';
-			const res = await makePostRequest(loginUrl, invalid);
-			ensureResHasStatusCodeAndFieldData(res, 404, 'error', error);
+			const res = await makePostRequest(url, invalid);
+			ensureResHasStatusCodeAndFieldData(res, 401, 'error', error);
 		});
 
 		it('should return error if password is incorrect', async () => {
@@ -89,8 +89,8 @@ exports.authTest = function (type) {
 				password: '5omePa55word?',
 			};
 			const error = 'Invalid Email or Password';
-			const res = await makePostRequest(loginUrl, invalid);
-			ensureResHasStatusCodeAndFieldData(res, 404, 'error', error);
+			const res = await makePostRequest(url, invalid);
+			ensureResHasStatusCodeAndFieldData(res, 401, 'error', error);
 		});
 	});
 	async function makePostRequest(url, body) {

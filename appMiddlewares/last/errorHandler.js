@@ -5,7 +5,7 @@ module.exports = app => {
 		const errMsg = 'Internal server error';
 		console.error(error);
 		const responder = new Responder(res);
-		responder.withStatusCode(501).withMessage(errMsg).send();
+		responder.withStatusCode(500).withMessage(errMsg).send();
 	};
 	app.use(eH);
 };

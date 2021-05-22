@@ -22,6 +22,7 @@ const Job = new Schema({
 	},
 	amount: {
 		type: Number,
+		default: 0.0,
 	},
 	speciality: {
 		type: String,
@@ -37,7 +38,7 @@ const Job = new Schema({
 	imageUrl: {
 		type: String,
 		required: true,
-		maxlength: 30,
+		maxlength: 50,
 		minlength: 10,
 	},
 });
@@ -49,6 +50,14 @@ statics.createOne = async function (data) {
 };
 statics.findAllForVetId = async function (vet_id) {
 	return await this.find({ vet_id });
+};
+methods.setAmount = async function (amount) {
+	this.amount = amount;
+	return await this.save();
+};
+methods.setVetId = async function (vet_id) {
+	this.vet_id = vet_id;
+	return await this.save();
 };
 
 methods.markAsPaid = async function () {

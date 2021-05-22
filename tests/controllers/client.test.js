@@ -11,6 +11,7 @@ const {
 } = require('../utils');
 
 const { ensureResHasStatusCodeAndFieldData } = require('./utils');
+const { ensureEqual } = require('../testUtil');
 
 const PORT = 3420;
 
@@ -37,7 +38,7 @@ describe('Client', () => {
 		const url = '/client/post-job';
 		token = 'Bearer abkljrklejklejrkljeklrejjrklejr';
 		const res2 = await makePostRequest(url, {});
-		expect(res2.status).toBe(401);
+		ensureEqual(res2.status, 401);
 	});
 
 	describe('when logged in ', () => {
@@ -65,16 +66,8 @@ describe('Client', () => {
 
 		describe('Job upload', () => {
 			afterEach(done => {
-				const deletePath = path.resolve('./Data/Images');
-				fs.readdir(deletePath, (err, files) => {
-					if (err) throw new Error(err);
-					for (const file of files) {
-						fs.unlink(path.join(deletePath, file), err => {
-							if (err) throw new Error(err);
-						});
-					}
-					done();
-				});
+				const dirPath = path.resolve('./Data/Images');
+				deleteFilesInDirAndExecuteDoneWhenThrough(dirPath, done);
 			});
 
 			it('should post new job', async () => {
@@ -114,6 +107,22 @@ describe('Client', () => {
 					'Review added successfully.'
 				);
 			});
+			it('Should be able to pay a job', async () => {
+				const paymnet = {
+					job_id: job.id,
+					amount: 4000,
+					payment_method: 'M-Pesa',
+				};
+				const url = '/client/pay-job';
+				await job.setAmount(paymnet.amount);
+				const res = await makePostRequest(url, paymnet);
+				ensureResHasStatusCodeAndFieldData(
+					res,
+					201,
+					'message',
+					'Payment successful.'
+				);
+			});
 		});
 	});
 
@@ -130,3 +139,15 @@ describe('Client', () => {
 		return await request(app).post(url).set('Authorization', token).send(body);
 	}
 });
+
+function deleteFilesInDirAndExecuteDoneWhenThrough(dirPath, done) {
+	fs.readdir(dirPath, (err, files) => {
+		if (err) throw new Error(err);
+		for (const file of files) {
+			fs.unlink(path.join(dirPath, file), err => {
+				if (err) throw new Error(err);
+			});
+			done();
+		}
+	});
+}

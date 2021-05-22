@@ -23,7 +23,7 @@ const creds = {
 	password: ' Pa55word??>',
 };
 
-describe('Vet Details', () => {
+describe.skip('Vet Details', () => {
 	includeSetUpAndTearDown();
 	describe('addDetails', () => {
 		let id;

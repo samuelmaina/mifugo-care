@@ -7,6 +7,7 @@ const JobPull = new Schema({
 	vet_id: {
 		type: ObjectId,
 		required: true,
+		unique: true,
 	},
 	jobIds: [
 		{
@@ -19,6 +20,9 @@ const { statics, methods } = JobPull;
 
 statics.createOne = async function (data) {
 	return await this.create(data);
+};
+statics.findOneForVetId = async function (vet_id) {
+	return await this.findOne({ vet_id });
 };
 
 methods.addJobIdToPull = async function (id) {
