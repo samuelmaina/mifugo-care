@@ -1,63 +1,81 @@
 const { Job } = require('../../models');
+
 const {
 	ensureObjectsHaveSameValuesForProps,
 	ensureEqual,
 	ensureIsTruthy,
 	ensureIdsAreEqual,
+	ensureArraysAreEqual,
 } = require('../testUtil');
 
 const {
 	includeSetUpAndTearDown,
-	clearModel,
 	generateRandomMongooseId,
 	clearDb,
+	createJob,
+	createJobData,
+	generateNMongooseIds,
 } = require('../utils');
 
-describe.skip('Job', () => {
+describe('Job', () => {
 	includeSetUpAndTearDown();
 	describe('Job', () => {
-		let vet_id;
-		let client_id;
 		let data;
 		afterEach(async () => {
-			await clearModel(Job);
-		});
-		beforeAll(async () => {
-			vet_id = generateRandomMongooseId();
-			client_id = generateRandomMongooseId();
-			data = {
-				vet_id,
-				client_id,
-				location: {
-					latitude: 3,
-					longitude: 4,
-				},
-				imageUrl: '/path/to/image.jpg',
-				description: 'The cow very unhealthy. ',
-				amount: 1000,
-			};
+			await clearDb();
 		});
 		afterAll(async () => {
 			await clearDb();
 		});
 		it('createOne', async () => {
+			data = createJobData(
+				generateRandomMongooseId(),
+				generateRandomMongooseId(),
+				[32, 32],
+				'dog'
+			);
 			const doc = await Job.createOne(data);
-			const props = ['vet_id', 'client_id', 'location', 'amount', 'imageUrl'];
+			const props = ['vet_id', 'client_id', 'location', 'amount'];
 			ensureObjectsHaveSameValuesForProps(props, doc, data);
+			ensureArraysAreEqual(doc.imageUrls, data.imageUrls);
 		});
 
 		describe('statics', () => {
+			const trials = 50;
+			const numberOfVetsOrClients = Math.ceil(trials / 5);
+
+			let vetIds = [];
+			let clientIds = [];
+			beforeEach(async () => {
+				vetIds = generateNMongooseIds(trials);
+				clientIds = generateNMongooseIds(trials);
+				for (let i = 0; i < trials; i++) {
+					await createJob(
+						vetIds[i % numberOfVetsOrClients],
+						clientIds[i % numberOfVetsOrClients],
+						[34, 23],
+						'dog'
+					);
+				}
+			});
 			it('findAllForVetId', async () => {
-				const trials = 50;
-				for (let i = 0; i < trials; i++) await Job.createOne(data);
-				const docs = await Job.findAllForVetId(data.vet_id);
-				ensureEqual(docs.length, trials);
+				const docs = await Job.findAllForVetId(vetIds[0]);
+				ensureEqual(docs.length, Math.ceil(trials / numberOfVetsOrClients));
+			});
+			it('findAllForClientId', async () => {
+				const docs = await Job.findAllForClientId(clientIds[0]);
+				ensureEqual(docs.length, Math.ceil(trials / numberOfVetsOrClients));
 			});
 		});
 		describe('methods', () => {
 			let doc;
 			beforeEach(async () => {
-				doc = await Job.createOne(data);
+				doc = await createJob(
+					generateRandomMongooseId(),
+					generateRandomMongooseId(),
+					[20, 20],
+					'dog'
+				);
 			});
 			it('should set amount', async () => {
 				const amount = 5000;

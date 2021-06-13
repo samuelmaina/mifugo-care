@@ -1,0 +1,28 @@
+[
+    { 
+        "speciality": "InternalMedicine",
+        "vets": [
+            "Andrea Morrison",
+            "kalvin spearson",
+            "kiroko Steplon",
+            "Jt Mbugua",
+            "Racheal presley"
+        ]
+    },
+    {
+        "speciality": "Surgery",
+        "vets":[
+            "W. Anderson",
+            "Garry Miller",
+            "Rashid Abdalla"
+        ]
+    }, 
+    {
+        "speciality":"EmergencyAndCriticalCare",
+        "vets":[
+            "Mark Morrison",
+            "Wacko .JK",
+            "Billie Jean"
+        ]
+    }
+]

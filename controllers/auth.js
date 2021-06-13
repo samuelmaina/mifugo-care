@@ -19,6 +19,9 @@ exports.postSignUp = async function (req, res, next) {
 		return responder
 			.withStatusCode(201)
 			.withMessage('Successfully signed up.')
+			.withData({
+				type,
+			})
 			.send();
 	} catch (error) {
 		next(error);
@@ -43,6 +46,7 @@ exports.postLogin = async function (req, res, next) {
 					if (err) return next(err);
 					const data = {
 						success: true,
+						auth: type,
 						token: 'Bearer ' + token,
 					};
 					responder.withStatusCode(201).withData(data).send();
@@ -56,6 +60,11 @@ exports.postLogin = async function (req, res, next) {
 	} catch (error) {
 		next(error);
 	}
+};
+
+exports.postReset = async (req, res, next) => {
+	const { body } = req;
+	const { email } = body;
 };
 
 const client = 'client';

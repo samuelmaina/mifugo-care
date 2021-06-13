@@ -1,0 +1,126 @@
+input[type='search'] {
+	height: 35px;
+	border: 0.5px solid #1280a5;
+	border-radius: 50px;
+}
+.left-inner-addon input {
+	padding-left: 24px;
+	width: 90%;
+}
+.left-inner-addon i {
+	position: absolute;
+	left: 5px;
+	cursor: pointer;
+	top: 0.7rem;
+}
+.user-icon span {
+	position: relative;
+	top: -0.2rem;
+	right: 0.2rem;
+	font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande';
+}
+.user-icon i {
+	position: relative;
+	top: 0.2rem;
+}
+.N_L-links ul {
+	width: 100%;
+	padding: 0;
+	list-style-type: none;
+
+	display: flex;
+	justify-content: space-between;
+}
+.N_L-links li a {
+	padding: 0.5rem 1rem;
+	font-size: 16px;
+	font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande';
+	color: #000000b2;
+	text-decoration: none;
+}
+
+.N_L-links li a:hover {
+	box-shadow: 0 0 2px 0.1px green;
+}
+.togglenav ul li a {
+	font-weight: 400;
+	font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande';
+	color: #000000b2;
+	text-decoration: none;
+}
+.togglenav ul li {
+	margin: 3px;
+	padding: 0.5rem;
+}
+.togglenav-links-sp span {
+	position: absolute;
+	right: 20px;
+}
+.togglenav-custom-links {
+	padding-right: 20px;
+}
+.togglenav div {
+	font-family: Arial;
+	font-size: 14px;
+	line-height: 22px;
+	padding: 10px;
+	cursor: pointer;
+}
+strong {
+	font-weight: 700;
+}
+.sub-nav span :hover {
+	background-color: lightgrey;
+	padding: 0.1rem;
+	border-radius: 5px;
+}
+.navLeft span {
+	margin-right: 5px;
+}
+.navLeft strong {
+	font-family: Impact fantasy;
+	color: white;
+
+	font-size: 16px;
+}
+.card-view {
+	display: flex;
+	flex-direction: column;
+	width: 84%;
+	margin-left: 1%;
+	flex: 1 1 0;
+}
+.card-view span {
+	padding: 2%;
+	margin-left: 5%;
+}
+.card-view p span {
+	margin-left: 1%;
+}
+.Rot180deg {
+	transform: rotate(180deg);
+}
+hr {
+	color: rgba(128, 128, 128, 0.2);
+	width: 98%;
+	margin: 20px 1% 20px 1%;
+}
+.thumbsUp :hover {
+	fill: #1280a5;
+	cursor: pointer;
+}
+.task section {
+	padding: 0.5rem 0.2rem;
+}
+
+.custom-file-upload {
+	border: 1px solid #ccc;
+	display: inline-block;
+	padding: 0.2rem 2rem;
+	cursor: pointer;
+}
+.custom-file-upload strong {
+	position: relative;
+	top: -10px;
+	left: 0.5rem;
+}

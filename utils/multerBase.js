@@ -11,7 +11,7 @@ function multerSetting(filefield, fileDestination, fileFilter) {
 		},
 	});
 	const multerSettings = { storage, fileFilter };
-	return multer(multerSettings).single(filefield);
+	return multer(multerSettings);
 }
 
 module.exports = multerSetting;

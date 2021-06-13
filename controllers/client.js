@@ -1,18 +1,32 @@
-const { Job, Review } = require('../models');
+const { Job, Review, VetDetails, RecommendedJob } = require('../models');
+const { vet } = require('../services');
 
 const { Responder } = require('../utils');
 
 exports.postJob = async (req, res, next) => {
 	try {
 		const responder = new Responder(res);
-		const { body, file } = req;
-		const imageUrl = file.path;
-		body.imageUrl = imageUrl;
-		await Job.createOne(body);
+		const { body, user, files } = req;
+		body.files = files;
+		body.client_id = user.id;
+		const location = body.location;
+		const delimeter = ',';
+		const strings = location.split(delimeter);
+		body.location = [Number(strings[0]), Number(strings[1])];
+		const job = await Job.createOne(body);
 		responder
 			.withStatusCode(201)
 			.withMessage('Job posted successfully.')
 			.send();
+
+		const { speciality } = body;
+
+		const suitable = await vet.findSuitableVet(body.location, speciality);
+		if (suitable)
+			await RecommendedJob.createOne({
+				vet_id: suitable,
+				job_id: job.id,
+			});
 	} catch (error) {
 		next(error);
 	}
@@ -60,6 +74,16 @@ exports.pay = async (req, res, next) => {
 		next(error);
 	}
 };
+
+exports.getAllJobs = async (req, res, next) => {
+	console.log('reached here');
+	const responder = new Responder(res);
+	const { user } = req;
+	const { id } = user;
+	const jobs = await Job.findAllForClientId(id);
+	responder.withStatusCode(201).withData({ jobs }).send();
+};
+
 async function findJobByIdAndReturnErrorMessageIfDoesNotExist(
 	job_id,
 	responder

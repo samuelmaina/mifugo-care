@@ -1,56 +1,104 @@
-let user = localStorage.getItem('currentUser')
-  ? JSON.parse(localStorage.getItem('currentUser')).vp_P_A
-  : '';
+import { randStr } from '../utils';
+let user = localStorage.getItem('_u')
+	? JSON.parse(localStorage.getItem('_u')).vp_P_A
+	: '';
 
-let token = localStorage.getItem('currentUser')
-  ? JSON.parse(localStorage.getItem('currentUser')).id
-  : '';
+let token = localStorage.getItem('_u')
+	? JSON.parse(localStorage.getItem('_u')).u
+	: '';
+
+/*export const routePass = () => ({
+	vet: 'v' + randStr(),
+	client: 'c' + randStr(),
+	vetUpdate: 'u' + randStr(),
+});*/
 
 export const routePass = {
-  vet: 'vetsysty674560Fgre6678',
-  client: 'vetsystyfgh38895gdtufh',
-  vetUpdate: 'vetsyse6678gt8874nmndc',
+	vet: 'v' + randStr(),
+	client: 'c' + randStr(),
+	vetUpdate: 'u' + randStr(),
 };
 
+let typeChar = '';
+if (user !== undefined) {
+	typeChar = user.charAt(0);
+}
+
+if (typeChar === 'v') user = routePass.vet;
+else if (typeChar === 'c') user = routePass.client;
+else if (typeChar === 'u') user = routePass.vetUpdate;
+
 export const initialState = {
-  userDetails: '' || user,
-  token: '' || token,
-  loading: false,
-  errorMessage: null,
+	userDetails: '' || user,
+	token: '' || token,
+	loading: false,
+	errorMessage: null,
+	remoteErrorMessage: null,
+	pass: routePass,
+	view: null,
+	clientInitCoords: null,
+	successMessage: '',
 };
 
 export const AuthReducer = (initialState, action) => {
-  switch (action.type) {
-    case 'REQUEST_API':
-      return {
-        ...initialState,
-        loading: true,
-      };
-    case 'LOGIN_SUCCESS':
-      return {
-        ...initialState,
-        userDetails: action.payload.vp_P_A,
-        token: action.payload.id,
-        loading: false,
-      };
-    case 'SIGNUP_SUCCESS':
-      return {
-        ...initialState,
-        loading: false,
-      };
-    case 'LOGOUT':
-      return {
-        ...initialState,
-        userDetails: '',
-        token: '',
-      };
-    case 'APIACCESS_ERROR':
-      return {
-        ...initialState,
-        loading: false,
-        errorMessage: action.error,
-      };
-    default:
-      throw new Error(`unhandled action type: ${action.type}`);
-  }
+	switch (action.type) {
+		case 'REQUEST_API':
+			return {
+				...initialState,
+				loading: true,
+			};
+		case 'LOGIN_SUCCESS':
+			return {
+				...initialState,
+				userDetails: action.payload.vp_P_A,
+				token: action.payload.u,
+				loading: false,
+			};
+		case 'UPLOAD_SUCCESS':
+			return {
+				...initialState,
+				loading: false,
+			};
+		case 'LOGOUT':
+			return {
+				...initialState,
+				userDetails: '',
+				token: '',
+			};
+		case 'APIACCESS_ERROR':
+			return {
+				...initialState,
+				loading: false,
+				errorMessage: action.error,
+			};
+		case '3RDPARTYAPIACCESS_ERROR':
+			return {
+				...initialState,
+				loading: false,
+				remoteErrorMessage: action.error,
+			};
+		case 'NAVIGATION':
+			return {
+				...initialState,
+				view: action.view,
+			};
+		case 'GEOLOCATION':
+			return {
+				...initialState,
+				clientInitCoords: action.init,
+			};
+		case 'TEST':
+			return {
+				...initialState,
+				loading: true,
+			};
+		case 'ACTION_SUCCESS':
+			return {
+				...initialState,
+				successMessage: action.message,
+				loading: false,
+			};
+		default:
+			throw new Error(`unhandled action type: ${action.type}`);
+	}
 };

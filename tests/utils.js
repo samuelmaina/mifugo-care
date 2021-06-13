@@ -6,10 +6,12 @@ const bcrypt = require('bcrypt');
 require('dotenv').config();
 
 const app = require('../app');
-
 const Models = require('../models');
 
+const { VetDetails } = require('../models');
+
 const { connector } = require('../models/utils');
+const { ensureIdsAreEqual, ensureObjectHasProp } = require('./testUtil');
 const MONGO_TEST_URI = process.env.MONGO_TEST_URI;
 
 const connectToDb = async () => {
@@ -125,4 +127,103 @@ exports.createDocWithDataForType = async (type, data) => {
 
 exports.generateRandomMongooseId = () => {
 	return mongoose.Types.ObjectId();
+};
+exports.generateRandomIntFromUpto = n => {
+	return Math.ceil(Math.random() * n);
+};
+
+exports.createVetDetails = async (id, location, specialities) => {
+	const data = {
+		id,
+		linkedInUrl: 'https:/linkedIn/example',
+		experience: 2,
+		location: {
+			latitude: location[0],
+			longitude: location[1],
+		},
+		speciality: specialities,
+	};
+	return await VetDetails.addDetails(data);
+};
+
+exports.createJobData = (vet_id, client_id, location, speciality) => {
+	return {
+		vet_id,
+		client_id,
+		location: {
+			latitude: location[0],
+			longitude: location[1],
+		},
+		speciality,
+		files: [
+			{ path: 'path/to/image1' },
+			{ path: 'path/to/image2' },
+			{ path: 'path/to/image3' },
+		],
+		description: 'The cow very unhealthy. ',
+		amount: 1000,
+	};
+};
+
+exports.createJob = async (vet_id, client_id, location, speciality) => {
+	const data = this.createJobData(vet_id, client_id, location, speciality);
+	return await Models.Job.createOne(data);
+};
+exports.createReview = async (job_id, rating) => {
+	const data = {
+		job_id,
+		rating,
+		comment: 'good service 1.',
+	};
+	return await Models.Review.createOne(data);
+};
+exports.createVet = async (email, password) => {
+	return await Models.Vet.createOne({ email, password });
+};
+exports.createClient = async (email, password) => {
+	return await Models.Client.createOne({ email, password });
+};
+exports.createJobPull = async (vet_id, job_ids) => {
+	return await Models.JobPull.createOne({ vet_id, job_ids });
+};
+exports.createRecommendedJob = async (vet_id, job_id) => {
+	return await Models.RecommendedJob.createOne({
+		vet_id,
+		job_id,
+	});
+};
+
+exports.generateReviewData = noOfJobIds => {
+	vet_id = this.generateRandomMongooseId();
+	job_ids = this.generateNMongooseIds(noOfJobIds);
+	return {
+		vet_id,
+		job_ids,
+	};
+};
+
+exports.findIdInArrayOfIds = (arr, key) => {
+	return arr.findIndex(id => {
+		return id.toString() === key.toString();
+	});
+};
+
+exports.ensureJobHasNecessaryFields = job => {
+	const props = ['imageUrls', 'time', 'speciality', 'description'];
+	props.forEach(prop => {
+		ensureObjectHasProp(job, prop);
+	});
+};
+
+exports.ensureTwoArraysHaveTheSameIds = (actual, expected) => {
+	actual.forEach((element, index) => {
+		ensureIdsAreEqual(element, expected[index]);
+	});
+};
+exports.generateNMongooseIds = trials => {
+	let ids = [];
+	for (let i = 0; i < trials; i++) {
+		ids.push(this.generateRandomMongooseId());
+	}
+	return ids;
 };

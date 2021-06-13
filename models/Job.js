@@ -16,6 +16,7 @@ const Job = new Schema({
 	location: {
 		type: Object,
 		required: true,
+		maxlength: 200,
 	},
 	isPaid: {
 		type: Boolean,
@@ -26,8 +27,9 @@ const Job = new Schema({
 	},
 	speciality: {
 		type: String,
+		required: true,
 		minlength: 2,
-		maxlength: 10,
+		maxlength: 30,
 	},
 	description: {
 		type: String,
@@ -35,28 +37,51 @@ const Job = new Schema({
 		minlength: 5,
 		maxlength: 200,
 	},
-	imageUrl: {
-		type: String,
+	imageUrls: {
+		type: Array,
 		required: true,
-		maxlength: 50,
-		minlength: 10,
+	},
+	time: {
+		type: Date,
+		default: Date.now(),
+	},
+	status: {
+		type: String,
+		default: 'pending',
 	},
 });
 
 const { statics, methods } = Job;
 
 statics.createOne = async function (data) {
-	return await this.create(data);
+	const imageUrls = [];
+	const files = data.files;
+	for (const file of files) {
+		imageUrls.push(file.path);
+	}
+	data.imageUrls = imageUrls;
+	const doc = await this.create(data);
+	return doc;
 };
 statics.findAllForVetId = async function (vet_id) {
 	return await this.find({ vet_id });
 };
+
+statics.findAllForClientId = async function (client_id) {
+	return await this.find({ client_id });
+};
+
 methods.setAmount = async function (amount) {
 	this.amount = amount;
 	return await this.save();
 };
 methods.setVetId = async function (vet_id) {
 	this.vet_id = vet_id;
+	return await this.save();
+};
+
+methods.setStatus = async function (status) {
+	this.status = status;
 	return await this.save();
 };
 

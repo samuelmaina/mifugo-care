@@ -9,7 +9,7 @@ const VetDetails = new Schema({
 		ref: 'Vet',
 	},
 	experience: {
-		type: Number,
+		type: String,
 		required: true,
 	},
 	location: {
@@ -19,7 +19,7 @@ const VetDetails = new Schema({
 
 	linkedInUrl: {
 		type: String,
-		required: true,
+		required: false,
 	},
 	speciality: {
 		type: Array,
@@ -28,6 +28,7 @@ const VetDetails = new Schema({
 });
 
 const { statics, methods } = VetDetails;
+
 statics.addDetails = async function (data) {
 	const details = { ...data };
 	details.personal_details_id = data.id;
@@ -35,6 +36,13 @@ statics.addDetails = async function (data) {
 };
 statics.findByVetId = async function (vet_id) {
 	return await this.findOne({ personal_details_id: vet_id });
+};
+statics.findAllForSpeciality = async function (speciality) {
+	return await this.find({ speciality });
+};
+
+methods.getVetId = function () {
+	return this.personal_details_id;
 };
 
 methods.editDetails = async function (details) {

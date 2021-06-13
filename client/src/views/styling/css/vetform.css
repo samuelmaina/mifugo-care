@@ -2,18 +2,9 @@ html {
 	font-size: 16px;
 	font-family: Georgia, Times, serif;
 }
-input[type='text'] {
-	padding: 10px;
-	margin: 10px 0;
-	box-shadow: 0 0 15px 4px rgba(0, 0, 0, 0.06);
-	border-radius: 10px;
-	width: 30vw;
+select:focus {
+	outline: green;
 }
-select {
-	width: 30vw;
-	padding: 10px;
-	margin: 10px 0;
-	border: 2px solid rgba(0, 0, 0, 0.4);
-	box-shadow: 0 0 15px 4px rgba(0, 0, 0, 0.06);
-	border-radius: 10px;
+ul li {
+	list-style: none;
 }

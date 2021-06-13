@@ -43,7 +43,9 @@ exports.authTest = function (type) {
 			const res = await makePostRequest(signUpUrl, data);
 			const status = 201;
 			const field = 'message';
+			const field2 = 'type';
 			ensureResHasStatusCodeAndFieldData(res, status, field, successMessage);
+			ensureResHasStatusCodeAndFieldData(res, status, field2, type);
 		});
 		it('should return error if the user already exists in the database', async () => {
 			//create the user in the database to simulate previous sign up.
@@ -67,6 +69,7 @@ exports.authTest = function (type) {
 		it('should login for correct data', async () => {
 			const res = await makePostRequest(url, data);
 			ensureResHasStatusCodeAndProp(res, 201, 'token');
+			ensureResHasStatusCodeAndFieldData(res, 201, 'auth', type);
 			const token = res.body.token;
 			ensureValueGreaterThanOrEqual(token.length, 41);
 			//ensure that the token has bearer in front.
@@ -93,6 +96,36 @@ exports.authTest = function (type) {
 			ensureResHasStatusCodeAndFieldData(res, 401, 'error', error);
 		});
 	});
+	describe('postRest', () => {
+		const url = `/auth/reset/${type}`;
+
+		beforeAll(async () => {
+			//to simulate sign up.
+			await createDocWithDataForType(type, data);
+		});
+		afterAll(async () => {
+			await clearDb();
+		});
+		it('should reset for correct data', async () => {
+			//data will have the email field that is required for for sign
+			const res = await makePostRequest(url, data);
+			ensureResHasStatusCodeAndFieldData(
+				res,
+				201,
+				'message',
+				`Dear ${data.name}, a link has been sent to your email. Click on it to reset password.`
+			);
+		});
+		it('should return error if email does not exist', async () => {
+			const invalid = {
+				email: 'someemail@email.com',
+			};
+			const error = 'The email does not exist.';
+			const res = await makePostRequest(url, invalid);
+			ensureResHasStatusCodeAndFieldData(res, 401, 'error', error);
+		});
+	});
+
 	async function makePostRequest(url, body) {
 		return await request(app).post(url).send(body);
 	}

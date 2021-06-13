@@ -1,0 +1,28 @@
+{
+    "Name":"Caresons",
+    "Ratings": 4.5,
+    "Client":true,
+    "Reviews": [
+        {
+            "postedBy": "Nicklause Michaelson",
+            "datePosted": "March 25,2021",
+            "likes":312,
+            "message":"Grip this bottle of limitless possibilities, Where will this liquid inspiration take your flow today",
+            "ratings": 5
+        },
+        {
+            "postedBy": "Mwari Jane",
+            "datePosted": "March 25,2021",
+            "likes":201,
+            "message":"Will your skills move from the sketch book to the history books? Play with the refreshing, real flavour that knows no boundaries",
+            "ratings": 4
+        },
+         {
+            "postedBy": "Energy Drink",
+            "datePosted": "March 25,2021",
+            "likes":569,
+            "message":"When others hit the wall are you gonna keep playing ? PLAY HARD..... POWER PLAY !!",
+            "ratings": 3
+        }
+    ]
+}

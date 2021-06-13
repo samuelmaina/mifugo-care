@@ -1,14 +1,27 @@
-import { BrowserRouter as Router, Route } from 'react-router-dom';
+import {
+	BrowserRouter as Router,
+	Route,
+	Redirect,
+	Switch,
+} from 'react-router-dom';
+import { createGlobalStyle } from 'styled-components';
 import { AuthProvider } from './context';
 import { AppRouter } from './components';
-import { routes, Login } from './config/routes';
+import { routes } from './config/routes';
 
+const GlobalStyle = createGlobalStyle`
+    body {
+        margin: 0;
+        padding: 0;
+    }
+`;
 export const App = () => {
 	return (
 		<AuthProvider>
+			<GlobalStyle />
 			<Router>
-				<div>
-					<Route exact path='/' component={Login} />
+				<Switch>
+					<Route exact path='/' render={(props) => <Redirect to='/login' />} />
 					{routes.map((route) => (
 						<AppRouter
 							key={route.path}
@@ -18,7 +31,7 @@ export const App = () => {
 							pass={route.pass}
 						/>
 					))}
-				</div>
+				</Switch>
 			</Router>
 		</AuthProvider>
 	);

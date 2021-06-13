@@ -22,6 +22,9 @@ exports.ensureIsFalsy = value => {
 exports.ensureNull = value => {
 	expect(value).toBeNull();
 };
+exports.ensureNotNull = value => {
+	expect(value).not.toBeNull();
+};
 
 exports.ensureObjectHasKeyValuePair = (object, key, value) => {
 	ensureComparable([object, key, value]);

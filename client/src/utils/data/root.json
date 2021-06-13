@@ -1,0 +1,74 @@
+[
+    {
+        "class":"petted-Animals",
+        "checked": false,
+        "types": [
+            "Cats",
+            "Dogs",
+            "Rabbits",
+            "Rodents",
+            "Avian Pets",
+            "Reptile pets",
+            "Aquatic pets",
+            "Arthropod pets"
+        ]
+    },
+    {
+        "class": "poultry/Birds",
+        "checked": false,
+        "types":[
+            "Hens",
+            "Turkeys",
+            "Ducks",
+            "Quail",
+            "Geese",
+            "Pigeons",
+            "Guinea fouls",
+            "Pea fouls",
+            "Doves",
+            "Ostriches"
+        ]
+
+    },
+    {
+        "class":"Livestock",
+        "checked": false,
+        "types":[
+            "Daily cattle",
+            "Beef Cattle",
+            "Domestic pigs",
+            "Sheeps",
+            "Goat",
+            "Horses",
+            "Donkeys",
+            "Mules",
+            "Alpacas",
+            "Oxen",
+            "Ilamas",
+            "Camel"
+        ]
+    },
+    {
+        "class":"Domesticated wild",
+        "checked": false,
+        "types":[
+            "Tigers",
+            "Lions",
+            "Wallabies",
+            "Praire dogs",
+            "Foxes",
+            "Genets",
+            "Fenner Foxes",
+            "Minks",
+            "Sugar gliders",
+            "Capy baras",
+            "Mongoose",
+            "Serval Cats",
+            "Degus",
+            "Axolotis",
+            "Skunks",
+            "Moose",
+            "Mini-pigs"
+        ]
+    }
+]

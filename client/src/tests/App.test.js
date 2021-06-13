@@ -4,34 +4,34 @@ import {
 	fireEvent,
 	getByTestId,
 	getByPlaceholderText,
+	getByText,
 } from '@testing-library/react';
 import { rest } from 'msw';
 import { setupServer } from 'msw/node';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { Aside } from '../views/public/signup';
-import { routePass } from '../context';
+import { Routes } from '../context';
 import { App } from '../app';
 import {
 	AssertAndValidateLogin,
 	AssertAndValidateSignup,
 } from '../utils/validate';
-import { VetForm } from '../views/private';
-const credentials = {
+import { IdVerificationandContacts } from '../views/private/sysview1';
+export const credentials = {
 	email_valid: 'romanReigns@gmail.com',
 	email_invalid: 'Romangmail.com',
 	password_valid: 'ro9_Re5@rr',
 	password_invalid: 'romanrei2',
+	linkedIn: 'http://localhost:3067/@romanReigns',
 };
 let container = document.createElement('div');
 
-const Render = component => render(component, container);
-describe.only('Login', () => {
+const Render = (component) => render(component, container);
+
+describe('Login', () => {
 	it('submit button greens on hover', () => {
 		renderWithRouter(<App />, { route: '/login' });
 		expect(screen.getByText(/Login/i)).toBeInTheDocument();
-		expect(getByTestId(document.documentElement, 'submit-button')).toHaveStyle(
-			'color:black'
-		);
 	});
 
 	it('handles empty logins', async () => {
@@ -45,35 +45,74 @@ describe.only('Login', () => {
 		renderWithRouter(<App />, { route: '/login' });
 		handleMockChange();
 		await handleExpectations({ text: 'Internal Server Error' });
-		expect(window.localStorage.getItem('currentUser')).toBeNull();
+		expect(window.localStorage.getItem('_u')).toBeNull();
 	});
 
 	it('Mock Allows vet to sign in successfully and Redirect', async () => {
 		await handleRedirection({
-			auth: routePass.vet,
+			auth: 'vet',
+			path: '/login/vet',
 		});
-		await screen.findByText(/vet/i);
-		expect(JSON.parse(localStorage.getItem('currentUser')).vp_P_A).toEqual(
-			routePass.vet
-		);
+		await screen.findByText(/View Recommended Tasks/i);
+		expect(JSON.parse(localStorage.getItem('_u')).vp_P_A).toEqual(Routes().vet);
 	});
-	it('Mock Allows client to sign in successfully and Redirect', async () => {
+	it('Mock Allows client to sign in successfully and Redirect, Successfully Request Vet service', async () => {
 		await handleRedirection({
-			auth: routePass.client,
+			auth: 'client',
+			path: '/login',
 		});
-		await screen.findByText(/client homepage/i);
-		expect(JSON.parse(localStorage.getItem('currentUser')).vp_P_A).toEqual(
-			routePass.client
+		const requestService = await screen.findByText(/Request Vet Service/i);
+		expect(JSON.parse(localStorage.getItem('_u')).vp_P_A).toEqual(
+			Routes().client
 		);
+		await fireEvent.click(requestService);
+		await screen.findByText(/Request form/i);
+		fireEvent.change(getByTestId(document.documentElement, 'category'), {
+			target: { value: 'petted-Animals' },
+		});
+		handleInputChange({ field: 'name', value: 'steppar' });
+		handleInputChange({
+			field: 'description',
+			value: 'A brief Description Provided',
+		});
+		await fireEvent.click(getByText(document.documentElement, 'REQUEST'));
+		await screen.findByText(/Request summary/i);
 	});
-	it('Mock Routes vet  to sign in successfully and Redirect to update profile', async () => {
+	it.skip('Mock Routes vet  to sign in successfully, Redirects to update profile and Routes To homepage', async () => {
 		await handleRedirection({
-			auth: routePass.vetUpdate,
+			auth: 'update',
+			path: '/login/vet',
 		});
-		await screen.findByText(/linkedIn/i);
-		expect(JSON.parse(localStorage.getItem('currentUser')).vp_P_A).toEqual(
-			routePass.vetUpdate
+		await screen.findByText(/Vet update Details/i);
+		expect(JSON.parse(localStorage.getItem('_u')).vp_P_A).toEqual(
+			Routes().vetUpdate
 		);
+		handleInputChange({ field: 'linkedIn URL', value: credentials.linkedIn });
+		fireEvent.change(getByTestId(document.documentElement, 'experience'), {
+			target: { value: '>3' },
+		});
+		fireEvent.change(getByTestId(document.documentElement, 'county'), {
+			target: { value: 'Nairobi' },
+		});
+		fireEvent.change(getByTestId(document.documentElement, 'subCounty'), {
+			target: { value: 'Embakasi South Sub County' },
+		});
+
+		const fakeUserResponse = {
+			success: true,
+			auth: 'Vet',
+			token: 'Bearer with_fake_JWT',
+		};
+		server.use(
+			rest.post('*/upload-for-vet', (req, res, ctx) => {
+				return res(ctx.json(fakeUserResponse));
+			})
+		);
+		await fireEvent.click(
+			getByTestId(document.documentElement, 'uploadButton')
+		);
+
+		await screen.findByText(/view/i);
 	});
 
 	afterAll(() => resetServer_env());
@@ -83,20 +122,23 @@ describe.only('Login', () => {
 		handleInputChange({ field: 'password', value: credentials.password_valid });
 	};
 
-	const handleRedirection = async ({ auth }) => {
-		const fakeUserResponse = { id: 'fake_user_token', vp_P_A: auth };
-
+	const handleRedirection = async ({ auth, path }) => {
+		const fakeUserResponse = {
+			success: true,
+			auth: auth,
+			token: 'Bearer with_fake_JWT',
+		};
 		mockSuccessfulrequest(fakeUserResponse);
-		renderWithRouter(<App />);
+		renderWithRouter(<App />, { route: path });
 		handleMockChange();
 		fireEvent.click(getByTestId(document.documentElement, 'submit-button'));
 	};
 });
 
-describe.skip('Signup', () => {
+describe('Signup', () => {
 	it('H1 Network keyword present', () => {
-		renderWithRouter(<App />);
-		expect(screen.getByText(/Remember/i)).toBeInTheDocument();
+		renderWithRouter(<App />, { route: '/signup' });
+		expect(screen.getByText(/Network/i)).toBeInTheDocument();
 	});
 
 	it('handles empty Signups', async () => {
@@ -106,7 +148,14 @@ describe.skip('Signup', () => {
 	});
 
 	it('Mock handles server exceptions', async () => {
-		localStorage.removeItem('currentUser');
+		server.use(
+			rest.post('*/sign-up/:path', (req, res, ctx) => {
+				return res(
+					ctx.status(500),
+					ctx.json({ error: 'Internal Server Error' })
+				);
+			})
+		);
 		renderWithRouter(<App />, { route: '/signup' });
 		handleChange(
 			'roman Reigns',
@@ -115,14 +164,21 @@ describe.skip('Signup', () => {
 			credentials.password_valid
 		);
 		await handleExpectations({ text: 'Internal Server Error' });
-		expect(window.localStorage.getItem('currentUser')).toBeNull();
+		expect(window.localStorage.getItem('_u')).toBeNull();
 	});
 
 	it('Mock allows user to sign up successfully And Redirect', async () => {
-		const fakeUserResponse = { token: 'fake_user_token', auth: 'signed' };
+		const fakeUserResponse = { message: 'Successfully signed up.' };
 
-		mockSuccessfulrequest(fakeUserResponse);
+		server.use(
+			rest.post('*/sign-up/:path', (req, res, ctx) => {
+				return res(ctx.json(fakeUserResponse));
+			})
+		);
 		renderWithRouter(<App />, { route: '/signup' });
+		fireEvent.change(getByTestId(document.documentElement, 'selector'), {
+			target: { value: 'vet' },
+		});
 		handleChange(
 			'roman Reigns',
 			credentials.email_valid,
@@ -132,7 +188,7 @@ describe.skip('Signup', () => {
 		fireEvent.click(getByTestId(document.documentElement, 'submit-button'));
 		await screen.findByText(/Remember/i);
 	});
-	afterAll(() => resetServer_env());
+	afterEach(() => resetServer_env());
 
 	const handleChange = (fullname, Email, password, confirm_password) => {
 		handleInputChange({ field: 'fullname', value: fullname });
@@ -175,7 +231,7 @@ describe('Login validator', () => {
 		data.password = credentials.password_invalid;
 		testforLoginValidator('invalid password');
 	});
-	const testforLoginValidator = text => {
+	const testforLoginValidator = (text) => {
 		Render(AssertAndValidateLogin(data));
 		expect(document.querySelector('div').textContent).toMatch(text);
 	};
@@ -184,14 +240,13 @@ describe('Login validator', () => {
 describe('signup Validator', () => {
 	const full_name = 'Roman Reigns';
 	const data = {
-		groupLevel: 'group1',
-		fullName: '',
+		name: '',
 		email: '',
 		password: '',
 	};
 
 	it('Resolves valid sign up credentials', () => {
-		data.fullName = full_name;
+		data.name = full_name;
 		data.email = credentials.password_valid;
 		data.password = credentials.password_valid;
 		testForSignupValidator('valid');
@@ -208,46 +263,57 @@ describe('signup Validator', () => {
 	});
 
 	it('Rejects any null field present', () => {
-		data.fullName = '';
+		data.name = '';
 		data.email = credentials.email_valid;
 		data.password = credentials.password_valid;
 		testForSignupValidator('key in all the fields');
 	});
 
 	it('rejects invalid password field', () => {
-		data.fullName = full_name;
+		data.name = full_name;
 		data.email = credentials.email_valid;
 		data.password = credentials.password_invalid;
 		testForSignupValidator('invalid password');
 	});
 
 	it('rejects invalid email field', () => {
-		data.fullName = full_name;
+		data.name = full_name;
 		data.email = credentials.email_invalid;
 		data.password = credentials.password_valid;
 		testForSignupValidator('invalid email');
 	});
-	const testForSignupValidator = text => {
+	const testForSignupValidator = (text) => {
 		Render(AssertAndValidateSignup(data));
 		expect(document.querySelector('div').textContent).toMatch(text);
 	};
 });
+describe.skip('Contact verifier', () => {
+	it('renders the correct message', () => {
+		Render(<IdVerificationandContacts />);
+		expect(screen.getByText(/Step 3 of 4 Identity/i)).toBeInTheDocument();
+	});
+	it('server returns contact infor for the user', () => {
+		const fakeUserResponse = {
+			status: { code: 200, message: 'ok' },
+			results: { tel: '0787482982' },
+		};
 
-describe('vetform', () => {
-	it('returns a valid component', () => {
-		Render(<VetForm />);
-		expect(container.textContent).not.toBeNull();
+		server.use(
+			rest.get('*/telephone/:path', (req, res, ctx) => {
+				return res(ctx.json(fakeUserResponse));
+			})
+		);
 	});
 });
-const server = setupServer(
-	rest.post('/auth', (req, res, ctx) => {
+export const server = setupServer(
+	rest.post('*/auth/*', (req, res, ctx) => {
 		return res(ctx.status(500), ctx.json({ error: 'Internal Server Error' }));
 	})
 );
 
-const mockSuccessfulrequest = (path, fakeUserResponse) => {
+export const mockSuccessfulrequest = (fakeUserResponse) => {
 	server.use(
-		rest.post(path, (req, res, ctx) => {
+		rest.post('*/auth/log-in/:type', (req, res, ctx) => {
 			return res(ctx.json(fakeUserResponse));
 		})
 	);
@@ -255,24 +321,24 @@ const mockSuccessfulrequest = (path, fakeUserResponse) => {
 beforeAll(() => server.listen());
 afterAll(() => server.close());
 
-const handleInputChange = ({ field, value }) => {
+export const handleInputChange = ({ field, value }) => {
 	fireEvent.change(getByPlaceholderText(document.documentElement, field), {
 		target: { value: value },
 	});
 };
 
-const handleExpectations = async ({ text }) => {
+export const handleExpectations = async ({ text }) => {
 	fireEvent.click(getByTestId(document.documentElement, 'submit-button'));
 	const alert = await screen.findByRole('alert');
 	expect(alert).toHaveTextContent(text);
 };
 
-const resetServer_env = () => {
+export const resetServer_env = () => {
 	server.resetHandlers();
-	window.localStorage.removeItem('token');
+	window.localStorage.removeItem('_u');
 };
 
-const renderWithRouter = (ui, { route = '/' } = {}) => {
+export const renderWithRouter = (ui, { route = '/' } = {}) => {
 	window.history.pushState({}, 'Test Page', route);
 	return render(ui, { wrapper: Router });
 };

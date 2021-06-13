@@ -1,13 +1,3 @@
-import { loginUser, logout, Signup } from './actions';
-import { useAuthState, useAuthDispatch, AuthProvider } from './context';
-import { routePass } from './reducer';
-
-export {
-  AuthProvider,
-  useAuthDispatch,
-  useAuthState,
-  loginUser,
-  logout,
-  Signup,
-  routePass,
-};
+export * from './actions';
+export { useAuthState, useAuthDispatch, AuthProvider, Routes } from './context';
+export { routePass } from './reducer';

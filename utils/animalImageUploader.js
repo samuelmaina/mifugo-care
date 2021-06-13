@@ -11,4 +11,4 @@ const isImage = type => {
 	return type === 'image/png' || type === 'image/jpg' || type === 'image/jpeg';
 };
 
-module.exports = multerConf(field, fileDestination, filter);
+module.exports = multerConf(field, fileDestination, filter).array('images', 10);

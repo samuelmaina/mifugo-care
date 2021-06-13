@@ -1,17 +1,23 @@
 const request = require('supertest');
 const path = require('path');
 const fs = require('fs');
-const { Job } = require('../../models');
+const { Job, RecommendedJob } = require('../../models');
 
 const {
 	clearDb,
 	startApp,
 	closeApp,
 	createDocWithDataForType,
+	createJob,
+	generateRandomMongooseId,
+	ensureJobHasNecessaryFields,
 } = require('../utils');
 
-const { ensureResHasStatusCodeAndFieldData } = require('./utils');
-const { ensureEqual } = require('../testUtil');
+const {
+	ensureResHasStatusCodeAndFieldData,
+	ensureResHasStatusCodeAndProp,
+} = require('./utils');
+const { ensureEqual, ensureObjectHasProp } = require('../testUtil');
 
 const PORT = 3420;
 
@@ -45,10 +51,10 @@ describe('Client', () => {
 		let doc;
 		let details;
 
-		const file = './tests/data/natalie.jpg';
-		const imageField = 'image';
+		const folder = './tests/data';
+		const imageField = 'images';
 
-		const imagePath = path.resolve(file);
+		const imagesPath = path.resolve(folder);
 
 		beforeEach(async () => {
 			const type = 'client';
@@ -57,10 +63,9 @@ describe('Client', () => {
 			const res = await request(app).post(loginUrl).send(data);
 			token = res.body.token;
 			details = {
-				client_id: doc.id,
+				location: '3, 4',
 				speciality: 'dog',
-				location: 'some/locatio/there',
-				description: 'The dog is problematic',
+				description: 'The cow very unhealthy. ',
 			};
 		});
 
@@ -75,7 +80,7 @@ describe('Client', () => {
 				const res = await makePostRequestWithFile(
 					url,
 					imageField,
-					imagePath,
+					imagesPath,
 					details
 				);
 				ensureResHasStatusCodeAndFieldData(
@@ -89,8 +94,7 @@ describe('Client', () => {
 		describe('After creation', () => {
 			let job;
 			beforeEach(async () => {
-				details.imageUrl = 'some/file/somewhere';
-				job = await Job.createOne(details);
+				job = await createJob(null, doc.id, [34, 23], 'dog');
 			});
 			it('Should be review a job', async () => {
 				const review = {
@@ -123,20 +127,53 @@ describe('Client', () => {
 					'Payment successful.'
 				);
 			});
+			it('Should be able to view all jobs', async () => {
+				const client_id = generateRandomMongooseId();
+				const trials = 20;
+				for (let i = 0; i < trials; i++) {
+					await createJob(
+						generateRandomMongooseId(),
+						client_id,
+						[12, 34],
+						`spec ${i}`
+					);
+				}
+				const url = '/client/all-jobs';
+				const res = await makeGetRequest(url);
+				ensureResHasStatusCodeAndProp(res, 201, 'jobs');
+				for (const job of res.body.jobs) {
+					ensureJobHasNecessaryFields(job);
+					ensureObjectHasProp(job, 'status');
+				}
+			});
 		});
 	});
 
-	async function makePostRequestWithFile(url, filefield, filepath, body) {
+	async function makePostRequestWithFile(url, filefield, dirPath, body) {
 		const req = request(app).post(url).set('Authorization', token);
+
 		for (const key in body) {
 			if (body.hasOwnProperty.call(body, key)) {
 				req.field(key, body[key]);
 			}
 		}
-		return await req.attach(filefield, filepath);
+		const reading = new Promise((resolve, reject) => {
+			fs.readdir(dirPath, async (err, files) => {
+				if (err) resolve(err);
+				for (const file of files) {
+					req.attach(filefield, path.resolve(dirPath, file));
+				}
+				resolve(true);
+			});
+		});
+		await reading;
+		return await req;
 	}
 	async function makePostRequest(url, body) {
 		return await request(app).post(url).set('Authorization', token).send(body);
+	}
+	async function makeGetRequest(url, body) {
+		return await request(app).get(url).set('Authorization', token);
 	}
 });
 
