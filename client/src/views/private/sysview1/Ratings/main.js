@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
-import { ReviewBox, GetStars } from './Review';
+import React from 'react';
+import { GetStars } from './Review';
 import * as Styled from '../../../../components';
 import details from '../../../../utils/data/details.json';
 import * as Icons from '../../../../images/svg/svg';
 
 export const VetOnView = (props) => {
-	const [Reviewer, setReviewer] = useState(false);
+	//const [Reviewer, setReviewer] = useState(false);
 
 	const search = props.nav.history.location.search;
 
@@ -26,14 +26,14 @@ export const VetOnView = (props) => {
 					<Styled.VetInfoName>{params}</Styled.VetInfoName>
 					<GetStars number={details.Ratings} />
 				</Styled.DetailsVetInfo>
-				{details.Client ? (
+				{/*details.Client ? (
 					<Styled.ReviewVet>
 						<Styled.ReviewVetButton onClick={(e) => setReviewer(!Reviewer)}>
 							Write a review{' '}
 						</Styled.ReviewVetButton>
 					</Styled.ReviewVet>
 				) : null}
-				{Reviewer ? <ReviewBox setReviewer={setReviewer} /> : null}
+				{Reviewer ? <ReviewBox setReviewer={setReviewer} /> : null*/}
 			</Styled.HeadContent>
 			<Styled.ReviewHead>
 				<strong>Reviews</strong>

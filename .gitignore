@@ -1,3 +1,6 @@
-/node_modules
+node_modules
+/Data/images
+/tests/data
+package.json
 package-lock.json
 .env

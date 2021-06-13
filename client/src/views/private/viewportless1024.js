@@ -61,7 +61,7 @@ const ViewPortLess1024 = (props) => {
 							<span className='togglenav-custom-links'>
 								<Icons.VhStar size={18} />
 							</span>
-							<strong>Perform Rating</strong>
+							<strong>View Rating</strong>
 						</div>
 						<div>
 							<span className='togglenav-custom-links'>

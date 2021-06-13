@@ -54,7 +54,7 @@ const LeftNavigator = (props) => {
 	};
 	if (pathname === paths.request) {
 		setRelativeView(
-			'Perform Rating',
+			'View Rating',
 			<Icons.VhStar size={18} fillColor={'white'} />,
 			paths.ratings
 		);

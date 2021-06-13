@@ -13,6 +13,7 @@ export async function doRequestAlljobs(dispatch) {
 		console.log(response);
 		return response;
 	}
+	return false;
 }
 
 export const sanitizedJobs = (jobs, status) => {
@@ -33,5 +34,6 @@ export const sanitizedJobs = (jobs, status) => {
 
 export const timeLinevalue = async (dispatch) => {
 	const data = await doRequestAlljobs(dispatch);
-	return sanitizedJobs(data.jobs, 'allocated').length;
+	if (data) return sanitizedJobs(data.jobs, 'allocated').length;
+	return 0;
 };

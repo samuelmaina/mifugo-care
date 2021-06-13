@@ -35,6 +35,7 @@ export const credentialsMeetConstraints = (data) => {
 };
 
 export const randStr = () => {
+	console.log('called');
 	return Array(5)
 		.fill(null)
 		.map(() => Math.random().toString(36).substr(2))

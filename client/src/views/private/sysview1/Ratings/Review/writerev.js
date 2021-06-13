@@ -6,7 +6,7 @@ import { UploadData, useAuthDispatch } from '../../../../../context';
 
 export const ReviewBox = (props) => {
 	const dispatch = useAuthDispatch();
-	const [rate, setRates] = useState(0);
+	const [rate, setRates] = useState(1);
 	const [review, setReview] = useState('');
 
 	async function handleSubmitReview(e) {
@@ -46,6 +46,7 @@ export const ReviewBox = (props) => {
 						<textarea
 							rows={10}
 							cols={30}
+							style={{ width: '100%' }}
 							value={review}
 							placeholder='Tell us how you feel about the services offered'
 							onChange={(e) => setReview(e.target.value)}

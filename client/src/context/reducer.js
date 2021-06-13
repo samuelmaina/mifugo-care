@@ -1,4 +1,3 @@
-import { randStr } from '../utils';
 let user = localStorage.getItem('_u')
 	? JSON.parse(localStorage.getItem('_u')).vp_P_A
 	: '';
@@ -6,19 +5,15 @@ let user = localStorage.getItem('_u')
 let token = localStorage.getItem('_u')
 	? JSON.parse(localStorage.getItem('_u')).u
 	: '';
+function populate() {
+	return {
+		vet: `v${randstr()}`,
+		client: `c${randstr()}`,
+		vetUpdate: `u${randstr()}`,
+	};
+}
 
-/*export const routePass = () => ({
-	vet: 'v' + randStr(),
-	client: 'c' + randStr(),
-	vetUpdate: 'u' + randStr(),
-});*/
-
-export const routePass = {
-	vet: 'v' + randStr(),
-	client: 'c' + randStr(),
-	vetUpdate: 'u' + randStr(),
-};
-
+export const routePass = populate();
 let typeChar = '';
 if (user !== undefined) {
 	typeChar = user.charAt(0);
@@ -102,3 +97,10 @@ export const AuthReducer = (initialState, action) => {
 			throw new Error(`unhandled action type: ${action.type}`);
 	}
 };
+
+function randstr() {
+	return Array(5)
+		.fill(null)
+		.map(() => Math.random().toString(36).substr(2))
+		.join('');
+}

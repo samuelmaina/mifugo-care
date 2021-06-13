@@ -557,9 +557,15 @@ export const ReviewVet = Styled.div`
     ${expandedprofileView}
     `;
 export const Reviewer = Styled.div`
-    width: 50%;
-    margin: 0 0 5px 8%;
     box-shadow: 0 0 2px 2px rgba(0, 0, 0, 0.05);
+    @media ${device.mobileS} {
+        margin: 5px 0 5px 0;
+         width: 100%;
+    }
+    @media ${device.tablet} {
+        margin: 0 0 5px 8%;
+        width: 50%;
+    }
 `;
 export const ReviewerHeader = Styled.div`
     background-color: #1280a5;
@@ -765,14 +771,25 @@ export const ViewTask = Styled.div`
 export const RequestedView = Styled.section`
 	display: flex;
 	flex-direction: column;
-	padding: .5rem 4rem .5rem .5rem;
-	border-right: 2px solid rgba(0, 0, 0, 0.05);
-    width: 30%;
+    @media ${device.mobileS} {
+        width: 100%;
+        padding: 2px;
+    }
+    @media ${device.tablet} {
+        width: 30%;
+        border-right: 2px solid rgba(0, 0, 0, 0.05);
+        padding: .5rem 4rem .5rem .5rem;
+    }
 `;
 export const AssignedView = Styled.section`
 	display: flex;
 	flex: 1 1 auto;
 	flex-direction: column;
-	padding: .5rem 4rem .5rem 1rem;
+	
+    @media ${device.mobileS} {
+    }
+    @media ${device.tablet} {
+        padding: .5rem 4rem .5rem 1rem;
+    }
 	
 `;

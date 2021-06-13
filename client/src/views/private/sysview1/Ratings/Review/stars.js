@@ -11,18 +11,22 @@ export const DrawReviewStars = (props) => {
 
 	const check = (i) => {
 		let src = document.getElementById('rts_st_ar_s');
-		for (let j = 0; j < i + 1; j++) {
-			src.children[j].children.item(0).attributes.fill.value = '#1280a5';
-			src.children[j].children.item(0).attributes.stroke.value = '#1280a5';
+		if (src) {
+			for (let j = 0; j < i + 1; j++) {
+				src.children[j].children.item(0).attributes.fill.value = '#1280a5';
+				src.children[j].children.item(0).attributes.stroke.value = '#1280a5';
+			}
 		}
 	};
 
 	const checkout = (i) => {
 		if (!rated || props.rate) {
 			let src = document.getElementById('rts_st_ar_s');
-			for (let j = props.rate; j < i + 1; j++) {
-				src.children[j].children.item(0).attributes.fill.value = 'white';
-				src.children[j].children.item(0).attributes.stroke.value = 'black';
+			if (src) {
+				for (let j = props.rate; j < i + 1; j++) {
+					src.children[j].children.item(0).attributes.fill.value = 'white';
+					src.children[j].children.item(0).attributes.stroke.value = 'black';
+				}
 			}
 		}
 	};

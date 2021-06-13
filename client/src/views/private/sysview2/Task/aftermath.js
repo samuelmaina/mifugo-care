@@ -4,27 +4,34 @@ import React, { useState } from 'react';
 import * as utils from '../../../../utils';
 export const Aftermath = (props) => {
 	const dispatch = useAuthDispatch();
-	const [amount, setAmount] = useState(0.0);
+	const [amount, setAmount] = useState(0);
 	const [infections, setBrief] = useState('');
 
 	async function postDetails(e) {
 		const data = {
 			infections: infections,
 			job_id: props.data._id,
-			amount: Number(amount),
+			amount: amount,
 		};
-		let response = await UploadData(dispatch, data, utils.remoteuri.jobPrice);
-		if (response) {
-			response = await UploadData(
-				dispatch,
-				{ job_id: data.job_id },
-				utils.remoteuri.removeFromPool
-			);
+		if (/^[0-9]{1,9}$/.test(data.amount)) {
+			let response = await UploadData(dispatch, data, utils.remoteuri.jobPrice);
 			if (response) {
-				//Remove Job from job pool
-				props.handlerecChange(false);
-				props.setAfterMath(false);
+				response = await UploadData(
+					dispatch,
+					{ job_id: data.job_id },
+					utils.remoteuri.removeFromPool
+				);
+				if (response) {
+					utils.clearContextErrors(dispatch);
+					props.handlerecChange(false);
+					props.setAfterMath(false);
+					return;
+				}
+				return;
 			}
+			return;
+		} else {
+			dispatch({ type: 'APIACCESS_ERROR', error: 'Invalid amount !' });
 		}
 	}
 
@@ -56,6 +63,7 @@ export const Aftermath = (props) => {
 						Done
 					</Styled.ConfirmAfterMath>
 				</Styled.DivConfirmAfterMath>
+				<utils.ViewErrorMessage />
 			</Styled.AfterMath>
 		</div>
 	);

@@ -52,7 +52,7 @@ export const AssertAndValidatePasscode = (passcode, dispatch) => {
 	return 1;
 };
 export const AssertAndValidateReview = (review, dispatch) => {
-	if (!review) return true;
+	if (!review) return false;
 	if (!validators.checkStoryValid(review)) {
 		dispatch({ type: 'APIACCESS_ERROR', error: 'Invalid User Review !!' });
 		return false;

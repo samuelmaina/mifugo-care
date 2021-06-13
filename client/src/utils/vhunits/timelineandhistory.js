@@ -21,7 +21,7 @@ export const PairStruct = (props) => {
 	useEffect(() => {
 		const doRequestAlljobs = async (status) => {
 			const data = await utils.doRequestAlljobs(dispatch);
-			setData(utils.sanitizedJobs(data.jobs, status));
+			if (data) setData(utils.sanitizedJobs(data.jobs, status));
 		};
 
 		if (review) doRequestAlljobs('done');
@@ -38,7 +38,6 @@ export const PairStruct = (props) => {
 					{data.map((req, i) => (
 						<Styled.ViewTask key={req._id}>
 							<Styled.RequestedView>
-								{/*<Styled.H2>Requested</Styled.H2>*/}
 								<div>
 									<Styled.PostedBy>Date :</Styled.PostedBy>
 									<Styled.DatePosted>
@@ -60,17 +59,17 @@ export const PairStruct = (props) => {
 									<Styled.DatePosted>{req.speciality}</Styled.DatePosted>
 								</div>
 								<div>
-									<Styled.PostedBy>decription :</Styled.PostedBy>
+									<Styled.PostedBy>description :</Styled.PostedBy>
 									<Styled.DatePosted>{req.description}</Styled.DatePosted>
 								</div>
 							</Styled.RequestedView>
 							<Styled.AssignedView>
-								<div style={{ padding: '.5rem .5rem' }}>
+								<div>
 									<Styled.RequestStatus>{req.status}</Styled.RequestStatus>
 								</div>
 							</Styled.AssignedView>
 							<Styled.AssignedView>
-								<div style={{ padding: '.5rem .5rem' }}>
+								<div>
 									{review ? (
 										<Styled.ReviewVetButton
 											style={{ float: 'right' }}

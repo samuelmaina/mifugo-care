@@ -49,7 +49,7 @@ const MainView = (props) => {
 						<Styled.RequestHistoryInner>
 							<strong>History Review</strong>
 							<div>
-								<p>text</p>
+								<p>Write reviews and rate services offered</p>
 							</div>
 						</Styled.RequestHistoryInner>
 					</Styled.RequestHistory>
@@ -80,7 +80,7 @@ const MainView = (props) => {
 					<Styled.H1>Request Vet Service</Styled.H1>
 				</Styled.AnimCard>
 				<Styled.AnimCard onClick={(e) => props.nav.history.push(paths.ratings)}>
-					<Styled.H1>Perform Vet Rating</Styled.H1>
+					<Styled.H1>view vet Rating</Styled.H1>
 					<strong>Ratings</strong>
 				</Styled.AnimCard>
 				<Styled.AnimCard>
