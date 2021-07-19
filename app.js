@@ -6,8 +6,14 @@ const routesLoader = require('./routesLoader');
 const loadMiddlewares = require('./loadMiddlewares');
 const app = express();
 
-app.use(express.static(path.join()));
-app.use('/Data', express.static(path.join(__dirname, 'Data')));
+app.use(express.static(path.join(__dirname, 'client', 'build')));
+app.get('*', (req, res, next) => {
+	try {
+		res.sendFile(path.join(__dirname, 'client', 'build', 'index.html'));
+	} catch (error) {
+		next(error);
+	}
+});
 
 const { first, last } = middlewares;
 loadMiddlewares(app, first);

@@ -1,6 +1,5 @@
 node_modules
 /Data/images
 /tests/data
-package.json
-package-lock.json
-.env
+.idea/
+.vscode/

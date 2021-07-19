@@ -1,7 +1,7 @@
 import { routePass } from './reducer';
 import { clearContextErrors } from '../utils';
 
-const ROOT_URL = 'http://localhost:3100';
+const ROOT_URL = 'http://localhost:3000';
 
 const requestOptions = {
 	method: 'POST',
@@ -24,10 +24,10 @@ export async function UploadData(dispatch, payload, path) {
 		: '';
 
 	await fetch(`${ROOT_URL}${path}`, requestOptions)
-		.then((r) => r.json().then((data) => (r.ok ? data : Promise.reject(data))))
+		.then(r => r.json().then(data => (r.ok ? data : Promise.reject(data))))
 
 		.then(
-			(user) => {
+			user => {
 				if (user.success) {
 					const auth = user.auth;
 
@@ -60,7 +60,7 @@ export async function UploadData(dispatch, payload, path) {
 				}
 			},
 
-			(err) => {
+			err => {
 				const error = err.error ? err.error : 'server Not Found';
 				dispatch({ type: 'APIACCESS_ERROR', error: error });
 				response = 0;
@@ -77,12 +77,12 @@ export async function fetchData(dispatch, path) {
 		: '';
 	const headers = requestOptions.headers;
 	await fetch(`${ROOT_URL}${path}`, { headers })
-		.then((r) => r.json())
+		.then(r => r.json())
 		.then(
-			(data) => {
+			data => {
 				response = data;
 			},
-			(err) => {
+			err => {
 				dispatch({ type: 'APIACCESS_ERROR', error: 'connection failed' });
 				response = 0;
 			}
@@ -92,10 +92,10 @@ export async function fetchData(dispatch, path) {
 
 export async function makeGETrequest(request_url, dispatch, geocode) {
 	await fetch(request_url)
-		.then((r) => r.json().then((data) => (r.ok ? data : Promise.reject(data))))
+		.then(r => r.json().then(data => (r.ok ? data : Promise.reject(data))))
 
 		.then(
-			(data) => {
+			data => {
 				if (data.status.code === 200) {
 					dispatch({ type: 'UPLOAD_SUCCESS' });
 					response = geocode
@@ -112,7 +112,7 @@ export async function makeGETrequest(request_url, dispatch, geocode) {
 					response = 0;
 				}
 			},
-			(err) => {
+			err => {
 				dispatch({
 					type: '3RDPARTYAPIACCESS_ERROR',
 					error: 'unable to connect to server',
