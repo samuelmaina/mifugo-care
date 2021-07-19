@@ -10,7 +10,7 @@
 		"node": "10.16.3"
 	},
 	"scripts": {
-		"start": "nodemon index.js ",
+		"start": "node index.js ",
 		"test": "jest --verbose --runInBand",
 		"heroku-postbuild": "cd client && npm install --only=dev && npm install && npm build"
 	},
