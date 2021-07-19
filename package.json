@@ -12,7 +12,7 @@
 	"scripts": {
 		"start": "node index.js ",
 		"test": "jest --verbose --runInBand",
-		"heroku-postbuild": "cd client && npm install --only=dev && npm install && npm build"
+		"heroku-postbuild": "cd client && npm install --only=dev && npm install && npm run build"
 	},
 	"keywords": [
 		"Vet",
