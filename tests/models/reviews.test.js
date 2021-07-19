@@ -14,7 +14,7 @@ const {
 } = require('../testUtil');
 const { vet } = require('../../services');
 
-describe('Reviews', () => {
+describe.skip('Reviews', () => {
 	includeSetUpAndTearDown();
 	describe('Reviews', () => {
 		let data;

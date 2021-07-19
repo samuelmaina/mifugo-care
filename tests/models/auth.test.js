@@ -15,7 +15,7 @@ const {
 
 const MAX_SETUP_TIME_IN_MS = 20000;
 
-describe.skip('Auth', () => {
+describe('Auth', () => {
 	includeSetUpAndTearDown();
 	describe('createOne', () => {
 		afterEach(async () => {

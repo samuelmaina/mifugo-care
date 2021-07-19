@@ -19,9 +19,9 @@ export const AppRouter = ({
 	return (
 		<Route
 			path={path}
-			render={(props) =>
+			render={props =>
 				isPrivate && !Boolean(userDetails === pass) ? (
-					<Redirect to={{ pathname: '/login' }} />
+					<Redirect to={{ pathname: '/' }} />
 				) : (
 					<Component {...props} />
 				)

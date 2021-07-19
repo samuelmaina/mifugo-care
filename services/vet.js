@@ -2,16 +2,13 @@ const radiusInKm = 6;
 const GeoPoint = require('geopoint');
 
 const { Vet, VetDetails, Review } = require('../models');
-const predict = require('../utils/predictSpeciality');
 
 exports.findSuitableVet = async (coOrdinates, speciality) => {
 	const location = {
 		latitude: coOrdinates[0],
 		longitude: coOrdinates[1],
 	};
-
-	const species = predict(speciality);
-	const vets = await VetDetails.findAllForSpeciality(species);
+	const vets = await VetDetails.findAllForSpeciality(speciality);
 	const vetIdsWithin = this.getVetsWithinRange(vets, location);
 	if (vetIdsWithin.length < 1) return null;
 	return await this.getVetWithHighestRating(vetIdsWithin);

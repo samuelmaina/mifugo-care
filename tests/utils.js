@@ -10,13 +10,25 @@ const Models = require('../models');
 
 const { VetDetails } = require('../models');
 
-const { connector } = require('../models/utils');
 const { ensureIdsAreEqual, ensureObjectHasProp } = require('./testUtil');
 const MONGO_TEST_URI = process.env.MONGO_TEST_URI;
 
 const connectToDb = async () => {
 	try {
 		await connector(MONGO_TEST_URI);
+	} catch (error) {
+		throw new Error(error);
+	}
+};
+
+const connector = async mongo_uri => {
+	try {
+		const connection = await mongoose.connect(mongo_uri, {
+			useUnifiedTopology: true,
+			useNewUrlParser: true,
+			useFindAndModify: false,
+		});
+		assert.ok(connection, 'No errors thrown but connection not established.');
 	} catch (error) {
 		throw new Error(error);
 	}
@@ -177,8 +189,8 @@ exports.createReview = async (job_id, rating) => {
 	};
 	return await Models.Review.createOne(data);
 };
-exports.createVet = async (email, password) => {
-	return await Models.Vet.createOne({ email, password });
+exports.createVet = async (name, email, password) => {
+	return await Models.Vet.createOne({ name, email, password });
 };
 exports.createClient = async (email, password) => {
 	return await Models.Client.createOne({ email, password });

@@ -18,7 +18,7 @@ const {
 	ensureObjectHasProp,
 } = require('../testUtil');
 
-describe('Recommended Jobs', () => {
+describe.skip('Recommended Jobs', () => {
 	includeSetUpAndTearDown();
 	afterEach(async () => {
 		await clearDb();

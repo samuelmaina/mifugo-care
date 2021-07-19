@@ -5,7 +5,7 @@ import { Applogin } from '../../components';
 import * as utils from '../../utils';
 import '../styling/css/interface.css';
 
-export const Login = (props) => {
+export const Login = props => {
 	const dispatch = useAuthDispatch();
 
 	const { loading, pass } = useAuthState();
@@ -48,7 +48,7 @@ export const Login = (props) => {
 
 	return (
 		<React.Fragment>
-			<Applogin className='app'>
+			<Applogin className="app">
 				<form>
 					<div>
 						<InputField
@@ -68,44 +68,47 @@ export const Login = (props) => {
 					</div>
 					<section>
 						<input
-							type='checkBox'
-							name='checkbox'
-							onChange={(e) => {
+							type="checkBox"
+							name="checkbox"
+							onChange={e => {
 								handleToggle(!checked);
 							}}
 						/>
 						<span>Remember me</span>
-						<span className='floated_to_right'>
-							<a href='\'>Forgot password</a>
+						<span className="floated_to_right">
+							<a href="\">Forgot password</a>
 						</span>
 						<br />
 					</section>
 					<button
-						data-testid='submit-button'
+						data-testid="submit-button"
 						style={{
 							marginTop: '50px',
 							borderRadius: '50px',
 							width: '90%',
 							marginLeft: '4%',
 						}}
-						onClick={(e) => PostLogin(e)}>
+						onClick={e => PostLogin(e)}
+					>
 						Login {loading ? '...' : null}
 					</button>
 					<p>
 						No account? Join VetHealth as a{' '}
 						<a
-							href='/signup'
-							onClick={(e) => {
+							href="/signup"
+							onClick={e => {
 								handleurlChange(e, 'vet');
-							}}>
+							}}
+						>
 							vet Officer
 						</a>{' '}
 						or
 						<a
-							href='/signup'
-							onClick={(e) => {
+							href="/signup"
+							onClick={e => {
 								handleurlChange(e, 'client');
-							}}>
+							}}
+						>
 							{' '}
 							Client
 						</a>

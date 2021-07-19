@@ -1,5 +1,5 @@
 //import root from '../data/root.json';
-export const RenderCheckboxes = (props) => {
+export const RenderCheckboxes = props => {
 	const data = props.data;
 
 	function handleChange(e) {
@@ -21,12 +21,12 @@ export const RenderCheckboxes = (props) => {
 	return (
 		<div>
 			<ul>
-				{data.spec.map((field) => (
+				{data.spec.map(field => (
 					<li key={field.class}>
 						<input
-							type='checkbox'
+							type="checkbox"
 							name={field.class}
-							onChange={(e) => handleChange(e)}
+							onChange={e => handleChange(e)}
 							checked={field.checked}
 						/>
 						{field.class}
@@ -37,10 +37,10 @@ export const RenderCheckboxes = (props) => {
 	);
 };
 
-export const getselectedspec = (arr) => {
+export const getselectedspec = arr => {
 	const temp = [];
 	for (let i = 0; i < arr.length; i++) {
-		if (arr[i].checked) temp.push(arr[i].types);
+		if (arr[i].checked) temp.push(arr[i].class);
 	}
 	return temp;
 };

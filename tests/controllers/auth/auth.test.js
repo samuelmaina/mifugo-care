@@ -1,6 +1,6 @@
 const { authTest } = require('./base');
 
-describe.skip('Auth controller', () => {
+describe('Auth controller', () => {
 	describe('Client', () => {
 		authTest('client');
 	});

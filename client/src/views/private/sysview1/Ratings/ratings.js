@@ -2,14 +2,14 @@ import { Entry } from '../../entry';
 import * as Styled from '../../../../components';
 import vets from '../../../../utils/data/vets.json';
 
-export const Ratings = (props) => {
+export const Ratings = props => {
 	return <Entry Component={ComponentView} nav={props}></Entry>;
 };
 
-const ComponentView = (props) => {
+const ComponentView = props => {
 	return (
 		<Styled.ClientRatingsView>
-			{vets.map((field) => (
+			{vets.map(field => (
 				<Styled.RatingCard key={field.speciality}>
 					<div
 						style={{
@@ -17,11 +17,12 @@ const ComponentView = (props) => {
 							fontSize: '21px',
 							fontFamily: 'Impact, fantasy',
 							color: '#065d7a',
-						}}>
+						}}
+					>
 						<strong>{field.speciality}</strong>
 					</div>
 					<Styled.RatingCardContent>
-						{field.vets.map((vet) => (
+						{field.vets.map(vet => (
 							<Styled.Vetview key={vet}>
 								<div style={{ width: '70%' }}>
 									<a href={`/client/ratings/details?id=${vet}`}>

@@ -39,11 +39,11 @@ describe('Vet Services', () => {
 		const { bestMatch, farAway, nonSpecializing, lowRated } = vetTypes();
 		it('should accept the bestMatch', async () => {
 			await setUp(bestMatch);
+			await setUp(farAway);
 			const assigned = await vet.findSuitableVet(
 				[jobLocation.latitude, jobLocation.longitude],
 				testSpeciality
 			);
-			console.log(assigned);
 			ensureIdsAreEqual(assigned, bestMatch.id);
 		});
 		it('should reject the farAway', async () => {
@@ -97,7 +97,7 @@ function vetTypes() {
 		},
 		bestMatch: {
 			id: generateRandomMongooseId(),
-			location: [1.005, 1.005],
+			location: [jobLocation.latitude, jobLocation.longitude],
 			reviews: [4, 4, 4],
 			speciality: [testSpeciality, 'sheep', 'goat'],
 		},

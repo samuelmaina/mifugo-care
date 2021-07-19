@@ -11,6 +11,7 @@ const {
 	createJob,
 	generateRandomMongooseId,
 	ensureJobHasNecessaryFields,
+	createVetDetails,
 } = require('../utils');
 
 const {
@@ -70,6 +71,18 @@ describe('Client', () => {
 		});
 
 		describe('Job upload', () => {
+			beforeEach(async () => {
+				const trials = 50;
+			});
+			beforeEach(async () => {
+				const strLocation = details.location.split(',');
+				const location = [Number(strLocation[0]), Number(strLocation[1])];
+				await createVetDetails(generateRandomMongooseId(), location, [
+					details.speciality,
+					'spec1',
+					'spec2',
+				]);
+			});
 			afterEach(done => {
 				const dirPath = path.resolve('./Data/Images');
 				deleteFilesInDirAndExecuteDoneWhenThrough(dirPath, done);
@@ -184,7 +197,7 @@ function deleteFilesInDirAndExecuteDoneWhenThrough(dirPath, done) {
 			fs.unlink(path.join(dirPath, file), err => {
 				if (err) throw new Error(err);
 			});
-			done();
 		}
+		done();
 	});
 }

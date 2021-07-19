@@ -6,9 +6,9 @@ import '../styling/css/interface.css';
 
 export const Aside = () => {
 	return (
-		<Styled.Divaside className='div-aside'>
+		<Styled.Divaside className="div-aside">
 			<p>Experience longlife Service</p>
-			<div className='common'>
+			<div className="common">
 				<Styled.Asidecontent>
 					<span>&#10004;</span> world class vetCare
 				</Styled.Asidecontent>
@@ -26,7 +26,7 @@ export const Aside = () => {
 	);
 };
 
-export const SignUp = (props) => {
+export const SignUp = props => {
 	const dispatch = useAuthDispatch();
 
 	const { loading } = useAuthState();
@@ -35,9 +35,10 @@ export const SignUp = (props) => {
 		utils.clearContextErrors(dispatch);
 		utils.clearLocalStorage('group');
 	}
-	const PostSignup = async (e) => {
+	const PostSignup = async e => {
 		e.preventDefault();
 		const grp = document.querySelector('select').value;
+		console.log(grp);
 
 		const payload = {
 			name: fullName,
@@ -77,8 +78,8 @@ export const SignUp = (props) => {
 	return (
 		<React.Fragment>
 			<Styled.AuthH1>Join World's best Vet Network</Styled.AuthH1>
-			<Styled.AppSignup className='app'>
-				<Styled.Formdiv className='form-div'>
+			<Styled.AppSignup className="app">
+				<Styled.Formdiv className="form-div">
 					<form>
 						<div>
 							<Styled.SelectField setGroup={setGroup} selected={groupLevel} />
@@ -111,7 +112,7 @@ export const SignUp = (props) => {
 								setField={setConfirmPassword}
 							/>
 						</div>
-						<button data-testid='submit-button' onClick={(e) => PostSignup(e)}>
+						<button data-testid="submit-button" onClick={e => PostSignup(e)}>
 							Apply to Join {loading ? '...' : null}
 						</button>
 					</form>

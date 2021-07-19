@@ -8,6 +8,8 @@ import { createGlobalStyle } from 'styled-components';
 import { AuthProvider } from './context';
 import { AppRouter } from './components';
 import { routes } from './config/routes';
+import { HomePage } from './views/public';
+import { Component } from 'react';
 
 const GlobalStyle = createGlobalStyle`
     body {
@@ -21,8 +23,8 @@ export const App = () => {
 			<GlobalStyle />
 			<Router>
 				<Switch>
-					<Route exact path='/' render={(props) => <Redirect to='/login' />} />
-					{routes.map((route) => (
+					<Route exact path="/" component={HomePage} />
+					{routes.map(route => (
 						<AppRouter
 							key={route.path}
 							path={route.path}

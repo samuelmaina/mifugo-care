@@ -1,9 +1,10 @@
 require('dotenv').config();
 const { emailSender } = require('../../services');
 
-describe.skip('Email Sending', () => {
+describe('Email Sending', () => {
 	it('should send email', async () => {
 		const receiver = 'samuelmayna@gmail.com';
+
 		await emailSender({
 			subject: 'Test',
 			replyTo: 'Samuel Maina',

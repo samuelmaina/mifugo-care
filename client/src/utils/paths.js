@@ -12,6 +12,7 @@ export const paths = {
 	rootLogin: '/login',
 	vetLogin: '/login/vet',
 	rootSignup: '/signup',
+	vetSignup: '/signup/vet',
 	notFound: '/*',
 };
 

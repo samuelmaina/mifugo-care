@@ -2,12 +2,18 @@ const { Client, Vet } = require('../models');
 const { auth } = require('../services');
 const { Responder } = require('../utils');
 
+const validTypes = ['client', 'vet'];
+
 exports.postSignUp = async function (req, res, next) {
 	try {
 		const responder = new Responder(res);
 		const { body, params } = req;
 		const { email } = body;
 		const { type } = params;
+
+		if (!validTypes.includes(type, 0))
+			return responder.withStatusCode(401).withError('Invalid Type').send();
+
 		const exists = await findEmailByType(email, type);
 		if (exists) {
 			return responder
@@ -67,8 +73,8 @@ exports.postReset = async (req, res, next) => {
 	const { email } = body;
 };
 
-const client = 'client';
-const vet = 'vet';
+const client = validTypes[0];
+const vet = validTypes[1];
 async function findEmailByType(email, type) {
 	switch (type) {
 		case client:
