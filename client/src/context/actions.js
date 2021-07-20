@@ -22,8 +22,7 @@ export async function UploadData(dispatch, payload, path) {
 	requestOptions.body = JSON.stringify(payload);
 
 	requestOptions.headers.authorization = getAuthorization();
-
-	await fetch(`${ROOT_URL}${path}`, requestOptions)
+	await fetch(path, requestOptions)
 		.then(r => r.json().then(data => (r.ok ? data : Promise.reject(data))))
 		.then(
 			user => {
@@ -73,7 +72,7 @@ export async function fetchData(dispatch, path) {
 	dispatch({ type: 'REQUEST_API' });
 	requestOptions.headers.authorization = getAuthorization();
 	const headers = requestOptions.headers;
-	await fetch(`${ROOT_URL}${path}`, { headers })
+	await fetch(path, { headers })
 		.then(r => r.json())
 		.then(
 			data => {
