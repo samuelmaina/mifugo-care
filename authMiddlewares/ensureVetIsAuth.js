@@ -9,6 +9,7 @@ vetSetup(passport);
 const strategy = vetAuth.local;
 const config = {
 	session: false,
+	failureRedirect: '/auth/vet/log-in',
 };
 
 module.exports = passport.authenticate(strategy, config);

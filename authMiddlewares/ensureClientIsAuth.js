@@ -7,6 +7,7 @@ clientSetup(passport);
 const strategy = clientAuth.local;
 const config = {
 	session: false,
+	failureRedirect: '/auth/client/log-in',
 };
 
 module.exports = passport.authenticate(strategy, config);
