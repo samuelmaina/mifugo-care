@@ -1,5 +1,6 @@
 import { routePass } from './reducer';
 import { clearContextErrors } from '../utils';
+import { getAuthorization, getBasePostConfig } from './utils';
 
 const ROOT_URL = 'http://localhost:3000';
 
@@ -16,16 +17,14 @@ let response;
 
 export async function UploadData(dispatch, payload, path) {
 	dispatch({ type: 'REQUEST_API' });
+	const requestOptions = getBasePostConfig();
 
 	requestOptions.body = JSON.stringify(payload);
 
-	requestOptions.headers.authorization = localStorage.getItem('_u')
-		? `${JSON.parse(localStorage.getItem('_u')).u}`
-		: '';
+	requestOptions.headers.authorization = getAuthorization();
 
 	await fetch(`${ROOT_URL}${path}`, requestOptions)
 		.then(r => r.json().then(data => (r.ok ? data : Promise.reject(data))))
-
 		.then(
 			user => {
 				if (user.success) {
@@ -72,9 +71,7 @@ export async function UploadData(dispatch, payload, path) {
 
 export async function fetchData(dispatch, path) {
 	dispatch({ type: 'REQUEST_API' });
-	requestOptions.headers.authorization = localStorage.getItem('_u')
-		? `${JSON.parse(localStorage.getItem('_u')).u}`
-		: '';
+	requestOptions.headers.authorization = getAuthorization();
 	const headers = requestOptions.headers;
 	await fetch(`${ROOT_URL}${path}`, { headers })
 		.then(r => r.json())
@@ -120,7 +117,6 @@ export async function makeGETrequest(request_url, dispatch, geocode) {
 				response = 0;
 			}
 		);
-
 	return response;
 }
 

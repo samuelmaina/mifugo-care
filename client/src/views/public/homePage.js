@@ -43,7 +43,7 @@ const Header = (
 						<a href="/about">About</a>
 					</li>
 					<li>
-						<a href={paths.rootSignup}>Any Sign Up</a>
+						<a href={paths.signUp}>Any Sign Up</a>
 					</li>
 					<li>
 						<a href={paths.rootLogin}>Client Login</a>

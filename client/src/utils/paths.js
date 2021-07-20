@@ -9,10 +9,9 @@ export const paths = {
 	historyReview: '/client/review',
 	clientReset: '/client/reset-password',
 	vetReset: '/vet/reset-password',
-	rootLogin: '/login',
-	vetLogin: '/login/vet',
-	rootSignup: '/signup',
-	vetSignup: '/signup/vet',
+	rootLogin: '/auth/log-in/client',
+	vetLogin: '/auth/log-in/vet',
+	signUp: '/auth/sign-up',
 	notFound: '/*',
 };
 
@@ -24,7 +23,8 @@ export const remoteuri = {
 	viewRecomm: '/vet/recommended-jobs',
 	addVetDet: '/vet/edit-details',
 	getPool: '/vet/job-pool',
-	ROOT_URL: 'http://localhost:3100',
+	ROOT_URL: 'http://localhost:3000',
+	postJob: '/client/post-job',
 	allforClient: '/client/all-jobs',
 	reviewJob: '/client/review-job',
 };

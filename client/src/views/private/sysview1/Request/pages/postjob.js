@@ -6,12 +6,14 @@ import {
 	popLocationFallback,
 	ViewErrorMessage,
 	createContextErrors,
+	remoteuri,
 } from '../../../../../utils';
 
-export const WaitForRequest = (props) => {
-	const dispatch = useAuthDispatch();
+const { ROOT_URL, postJob } = remoteuri;
+const path = ROOT_URL + postJob;
 
-	const path = '/client/post-job';
+export const WaitForRequest = props => {
+	const dispatch = useAuthDispatch();
 
 	async function postJob(e) {
 		let payload = props.request;
@@ -27,7 +29,7 @@ export const WaitForRequest = (props) => {
 				formData.append('images', payload.images[i]);
 			}
 		}
-		const ROOT_URL = 'http://localhost:3100';
+
 		const data = {
 			headers: {
 				'content-type': 'multipart/form-data',
@@ -35,17 +37,17 @@ export const WaitForRequest = (props) => {
 			},
 			body: formData,
 		};
-		Axios.post(`${ROOT_URL}${path}`, data.body, {
+		Axios.post(path, data.body, {
 			headers: data.headers,
 		}).then(
-			(res) => {
+			res => {
 				if (res) {
 					clearContextErrors(dispatch);
 					alert('Success');
 					props.nav.history.push('/client/homepage');
 				} else return;
 			},
-			(err) => {
+			err => {
 				alert('Unable to proceed with you Request ..Try again later');
 				createContextErrors(
 					'Unable to proceed with you Request ..Try again later',
@@ -58,7 +60,7 @@ export const WaitForRequest = (props) => {
 	return (
 		<Styled.ContactsDetail>
 			<div style={{ height: '55vh' }}>
-				<Styled.ProcwtReq onClick={(e) => postJob(e)}>
+				<Styled.ProcwtReq onClick={e => postJob(e)}>
 					Complete Request
 				</Styled.ProcwtReq>
 				<ViewErrorMessage />

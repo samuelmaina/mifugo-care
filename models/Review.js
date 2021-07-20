@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const { find } = require('./Auth');
 const { Schema, Types } = mongoose;
 
 const ObjectId = Types.ObjectId;

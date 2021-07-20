@@ -2,13 +2,13 @@ import React, { useState } from 'react';
 import * as Styled from '../../../../components';
 import { remoteuri } from '../../../../utils';
 
-export const PhotosSlideView = (props) => {
+export const PhotosSlideView = props => {
 	const setCurr = (e, i) => {
 		setSlide(false);
 		setView(i);
 	};
 
-	const getPad = (i) => {
+	const getPad = i => {
 		const diff = i - index;
 		let pad = 1.0 - diff * ratio;
 		if (pad > 1.0) {
@@ -30,23 +30,27 @@ export const PhotosSlideView = (props) => {
 
 	if (!slideview) index = view;
 
-	var ts = props.task.imageUrls[index];
+	const images = props.task.imageUrls;
+	const renderImages = images.map(image => {
+		return remoteuri.ROOT_URL + '/' + image;
+	});
 
 	return (
 		<div style={{ display: 'flex', flexWrap: 'wrap' }}>
 			<div style={{ width: '40%' }}>
 				<img
-					height='300px'
-					width='100%'
-					src={`${remoteuri.ROOT_URL}/${ts}`}
+					height="300px"
+					width="100%"
+					src={renderImages[index]}
 					alt={`view_image ${props.index}`}
 				/>
 			</div>
 			<div
 				style={{
 					margin: '2rem 0 0 4rem',
-				}}>
-				{props.task.imageUrls.map((pic, i) => (
+				}}
+			>
+				{renderImages.map((pic, i) => (
 					<div key={pic}>
 						<div
 							style={{
@@ -56,14 +60,15 @@ export const PhotosSlideView = (props) => {
 								width: `${getPad(i) * 50}px`,
 								height: `${getPad(i) * 50}px`,
 							}}
-							onClick={(e) => setCurr(e, i)}>
+							onClick={e => setCurr(e, i)}
+						>
 							<img
 								style={{
 									borderRadius: '50%',
 									height: '100%',
 									width: '100%',
 								}}
-								src={`${remoteuri.ROOT_URL}/${props.task.imageUrls[i]}`}
+								src={renderImages[i]}
 								alt={`view_image ${props.index}`}
 							/>
 						</div>
@@ -73,7 +78,7 @@ export const PhotosSlideView = (props) => {
 			<Styled.PhotosTog>
 				<span>
 					<strong>Toggle to </strong>
-					<Styled.CustomButtons onClick={(e) => setSlide(!slideview)}>
+					<Styled.CustomButtons onClick={e => setSlide(!slideview)}>
 						{slideview ? 'Block View' : 'Slide View'}
 					</Styled.CustomButtons>
 				</span>

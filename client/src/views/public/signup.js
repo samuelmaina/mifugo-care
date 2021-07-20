@@ -38,8 +38,6 @@ export const SignUp = props => {
 	const PostSignup = async e => {
 		e.preventDefault();
 		const grp = document.querySelector('select').value;
-		console.log(grp);
-
 		const payload = {
 			name: fullName,
 			email: email,
@@ -56,13 +54,14 @@ export const SignUp = props => {
 		const path = `/auth/sign-up/${grp}`;
 		if (validation_info === 'valid') {
 			let response = await UploadData(dispatch, payload, path);
+			const { vetLogin, rootLogin } = utils.paths;
 
 			if (response && (groupLevel || grp) === 'vet') {
 				clearData();
-				props.history.push('/login/vet');
+				props.history.push(vetLogin);
 			} else if (response && (grp || groupLevel) === 'client') {
 				clearData();
-				props.history.push('/login');
+				props.history.push(rootLogin);
 			}
 		} else {
 			dispatch({ type: 'APIACCESS_ERROR', error: validation_info });

@@ -17,7 +17,7 @@ export const routes = [
 		pass: '',
 	},
 	{
-		path: paths.rootSignup,
+		path: paths.signUp,
 		component: SignUp,
 		isPrivate: false,
 		pass: '',

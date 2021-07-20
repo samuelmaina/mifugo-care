@@ -77,11 +77,15 @@ exports.pay = async (req, res, next) => {
 };
 
 exports.getAllJobs = async (req, res, next) => {
-	const responder = new Responder(res);
-	const { user } = req;
-	const { id } = user;
-	const jobs = await Job.findAllForClientId(id);
-	responder.withStatusCode(201).withData({ jobs }).send();
+	try {
+		const responder = new Responder(res);
+		const { user } = req;
+		const { id } = user;
+		const jobs = await Job.findAllForClientId(id);
+		responder.withStatusCode(201).withData({ jobs }).send();
+	} catch (error) {
+		next(error);
+	}
 };
 
 async function findJobByIdAndReturnErrorMessageIfDoesNotExist(

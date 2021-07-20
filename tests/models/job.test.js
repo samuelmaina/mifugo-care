@@ -17,7 +17,7 @@ const {
 	generateNMongooseIds,
 } = require('../utils');
 
-describe('Job', () => {
+describe.only('Job', () => {
 	includeSetUpAndTearDown();
 	describe('Job', () => {
 		let data;

@@ -6,6 +6,7 @@ const validTypes = ['client', 'vet'];
 
 exports.postSignUp = async function (req, res, next) {
 	try {
+		console.log('reached post sign up');
 		const responder = new Responder(res);
 		const { body, params } = req;
 		const { email } = body;

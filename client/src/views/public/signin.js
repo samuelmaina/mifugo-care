@@ -16,7 +16,9 @@ export const Login = props => {
 
 		let pathname = props.location.pathname.toLocaleLowerCase();
 		pathname =
-			pathname === '/login' ? '/auth/log-in/client' : '/auth/log-in/vet';
+			pathname === '/auth/log-in/client'
+				? '/auth/log-in/client'
+				: '/auth/log-in/vet';
 
 		let validation_info = utils.AssertAndValidateLogin(payload);
 
@@ -45,6 +47,8 @@ export const Login = props => {
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 	const [checked, handleToggle] = useState(false);
+
+	const signUpRoute = '/auth/sign-up';
 
 	return (
 		<React.Fragment>
@@ -95,7 +99,7 @@ export const Login = props => {
 					<p>
 						No account? Join VetHealth as a{' '}
 						<a
-							href="/signup"
+							href={signUpRoute}
 							onClick={e => {
 								handleurlChange(e, 'vet');
 							}}
@@ -104,7 +108,7 @@ export const Login = props => {
 						</a>{' '}
 						or
 						<a
-							href="/signup"
+							href={signUpRoute}
 							onClick={e => {
 								handleurlChange(e, 'client');
 							}}
