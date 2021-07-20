@@ -9,8 +9,7 @@ import {
 	remoteuri,
 } from '../../../../../utils';
 
-const { ROOT_URL, postJob } = remoteuri;
-const path = ROOT_URL + postJob;
+const path = remoteuri.postJob;
 
 export const WaitForRequest = props => {
 	const dispatch = useAuthDispatch();

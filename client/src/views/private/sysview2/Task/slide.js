@@ -32,7 +32,7 @@ export const PhotosSlideView = props => {
 
 	const images = props.task.imageUrls;
 	const renderImages = images.map(image => {
-		return remoteuri.ROOT_URL + '/' + image;
+		return '/' + image;
 	});
 
 	return (
