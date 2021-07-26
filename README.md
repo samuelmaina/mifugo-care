@@ -1,6 +1,7 @@
 # Vet Health 
  it is  a web based system that connect livestock farmer to vet services.
 
+![Alt text](/Data/screenshots/Screenshot 2021-07-26 120302.png?raw=true "Optional Title")
 ## How to Run and start the backend / server
 
 1. install [node js](https://nodejs.dev/) in the client development machine and ensure npm is installed by the command
