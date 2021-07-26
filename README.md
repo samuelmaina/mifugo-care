@@ -1,4 +1,5 @@
-# Vet Health web based system
+# Vet Health 
+ it is  a web based system that connect livestock farmer to vet services.
 
 ## How to Run and start the backend / server
 
