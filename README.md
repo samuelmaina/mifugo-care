@@ -1,7 +1,7 @@
 # Vet Health 
  it is  a web based system that connect livestock farmer to vet services.
 
-![Home Page](Data/screenshots/Screenshot 2021-07-26 120302.png "Description goes here")
+![](Data/screenshots/Screenshot%202021-07-26%20120302.png "Description goes here")
 ## How to Run and start the backend / server
 
 
