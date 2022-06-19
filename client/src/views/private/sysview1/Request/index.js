@@ -1,2 +1,2 @@
-export { Request } from './requestService';
-export { IdVerificationandContacts } from './pages';
+export { Request } from "./requestService";
+// export { IdVerificationandContacts } from './pages';
