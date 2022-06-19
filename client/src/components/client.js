@@ -1,32 +1,32 @@
-import Styled, { css, keyframes } from 'styled-components';
-import medLab from '../images/medLab.jpeg';
-import vt1 from '../images/vt1.jpg';
-import vt2 from '../images/vt2.jpg';
-import { device } from './device';
-import { Input, Select, Card } from './authform';
-import User from '../images/svg/user.svg';
+import Styled, { css, keyframes } from "styled-components";
+import medLab from "../images/medLab.jpeg";
+import vt1 from "../images/vt1.jpg";
+import vt2 from "../images/vt2.jpg";
+import { device } from "./device";
+import { Input, Select, Card } from "./authform";
+import User from "../images/svg/user.svg";
 const imgArray = [medLab, vt1, vt2];
 const baseLayout = css`
-	display: flex;
-	flex-wrap: wrap;
+  display: flex;
+  flex-wrap: wrap;
 `;
 const expandedprofileView = css`
-	padding: 1%;
-	margin: 2%;
+  padding: 1%;
+  margin: 2%;
 `;
 const commonForCvTop1 = css`
-	box-shadow: 0 0 2px 2px rgba(0, 0, 0, 0.05);
-	border-top: 10px solid lightblue;
-	border-radius: 5px;
-	width: 100%;
-	height: 140px;
-	:hover {
-		box-shadow: 3px 5px 2px 2px rgba(0, 0, 0, 0.1);
-		border-top: 10px solid #065d7a;
-		border-radius: 0;
-		margin-top: 4px;
-		width: 99%;
-	}
+  box-shadow: 0 0 2px 2px rgba(0, 0, 0, 0.05);
+  border-top: 10px solid lightblue;
+  border-radius: 5px;
+  width: 100%;
+  height: 140px;
+  :hover {
+    box-shadow: 3px 5px 2px 2px rgba(0, 0, 0, 0.1);
+    border-top: 10px solid #065d7a;
+    border-radius: 0;
+    margin-top: 4px;
+    width: 99%;
+  }
 `;
 const fadeIn = keyframes`
     from {opacity: .99}
@@ -159,11 +159,11 @@ export const UserIcon = Styled.div`
 	text-align: right;
     cursor: pointer;
     ${(props) =>
-			props.active
-				? css`
-						box-shadow: 3px 5px 2px 2px rgba(0, 0, 0, 0.1);
-				  `
-				: null}
+      props.active
+        ? css`
+            box-shadow: 3px 5px 2px 2px rgba(0, 0, 0, 0.1);
+          `
+        : null}
     :hover {
         box-shadow: 3px 5px 2px 2px rgba(0, 0, 0, 0.1);
     }
@@ -203,12 +203,12 @@ export const ClientRootContainer = Styled.div`
     width: 99%;
     margin-right: 1%;
     ${(props) =>
-			props.width < 1024
-				? css`
-						width: 100%;
-						margin-right: 0;
-				  `
-				: null}
+      props.width < 1024
+        ? css`
+            width: 100%;
+            margin-right: 0;
+          `
+        : null}
     @media ${device.laptop} {
         display : flex;
     }
@@ -365,7 +365,7 @@ export const NewsSectionImgs = Styled.div`
     z-index: -11;
     background: url(${(props) => imgArray[props.index]}) no-repeat center;
     background-size: cover;
-    height: 170px;
+    max-height:50%;
     width: 64%;
     border: 0.1px solid white;
     border-top-left-radius: 60%;
@@ -373,14 +373,14 @@ export const NewsSectionImgs = Styled.div`
     border-top-right-radius: 20%;
     border-bottom-right-radius: 20%;
     ${(props) =>
-			props.index === 0
-				? css`
-						animation: 3s ${fadeInImages} ease-out;
-				  `
-				: css`
-						animation: 2s ${fadeInImages} ease-out;
-						opacity: 1;
-				  `};
+      props.index === 0
+        ? css`
+            animation: 3s ${fadeInImages} ease-out;
+          `
+        : css`
+            animation: 2s ${fadeInImages} ease-out;
+            opacity: 1;
+          `};
 `;
 export const NewsSectionHeader = Styled.div`
     padding-top:2%;
@@ -674,14 +674,14 @@ export const CustomLocationSetup = Styled.div`
     background-color: white;
     padding: .5rem;
      ${(props) =>
-				props.absolute
-					? css`
-							position: absolute;
-							right: 3px;
-							bottom: 3px;
-							box-shadow: 0 0 5px 2px rgb(198, 198, 198, 0.9);
-					  `
-					: null}
+       props.absolute
+         ? css`
+             position: absolute;
+             right: 3px;
+             bottom: 3px;
+             box-shadow: 0 0 5px 2px rgb(198, 198, 198, 0.9);
+           `
+         : null}
     
 `;
 export const ContactsDetail = Styled.div`

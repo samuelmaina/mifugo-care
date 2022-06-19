@@ -31,6 +31,9 @@ export const SelectField = (props) => {
       onChange={(e) => {
         props.setGroup(e.target.value);
       }}
+      style={{
+        fontSize: "1.5rem",
+      }}
       value={value}
     >
       <option value="vet">Vet officer</option>
@@ -43,13 +46,13 @@ export const Links = () => {
   return (
     <ul>
       <li>
-        <a href="/empty">link 1</a>
+        <a href="/client/homepage">Vet News</a>
       </li>
       <li>
-        <a href="/empty">link 2</a>
+        <a href="/client/homepage"> Ratings</a>
       </li>
       <li>
-        <a href="/empty">link 3</a>
+        <a href="/client/homepage">Payment</a>
       </li>
     </ul>
   );
