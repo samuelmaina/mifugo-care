@@ -4,8 +4,6 @@ import { UploadData, useAuthDispatch, useAuthState } from "../../context";
 import * as Styled from "../../components";
 import "../styling/css/interface.css";
 
-import Modal from "./Modal";
-
 export const Aside = () => {
   return (
     <Styled.Divaside className="div-aside">
@@ -55,7 +53,6 @@ export const SignUp = (props) => {
 
     const path = `/auth/sign-up/${grp}`;
     if (validation_info === "valid") {
-      <Modal />;
       let response = await UploadData(dispatch, payload, path);
       const { vetLogin, rootLogin } = utils.paths;
 
