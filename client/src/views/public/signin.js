@@ -102,6 +102,7 @@ export const Login = (props) => {
             No account?
             <a
               href={signUpRoute}
+              style={{ marginLeft: "1rem" }}
               onClick={(e) => {
                 handleurlChange();
               }}

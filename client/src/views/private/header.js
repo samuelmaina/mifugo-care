@@ -18,7 +18,9 @@ const Header = (props) => {
     <Styled.Wrapper>
       <Styled.C_H>
         <Styled.C_C>
-          <Styled.H_W>MifugoCare</Styled.H_W>
+          <Styled.H_W>
+            <a href="/">MifugoCare</a>
+          </Styled.H_W>
           <Styled.H_C>
             <Styled.N_L className="N_L-links">
               <Styled.Links />

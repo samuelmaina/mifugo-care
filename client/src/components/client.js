@@ -98,7 +98,7 @@ export const H_W = Styled.div`
     text-align: left;
     font-family: Luminari,'Jazz LET',Impact, fantasy;
 	color: #065d7a;
-    text-decoration: underline 2px;
+    text-decoration: none;
 	line-height: 70px;
     @media ${device.mobiles} {
         font-size: 25px;

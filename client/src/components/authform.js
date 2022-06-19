@@ -1,32 +1,32 @@
-import Styled, { css, keyframes } from 'styled-components';
-import Image from '../images/vt1.jpg';
-import { device } from './device';
-import ArrowDown from '../images/svg/dropdown.svg';
+import Styled, { css, keyframes } from "styled-components";
+import Image from "../images/vt1.jpg";
+import { device } from "./device";
+import ArrowDown from "../images/svg/dropdown.svg";
 const baseInputStyles = css`
-	padding: 5px;
-	margin: 10px 0;
-	border: 0;
-	border-bottom: 2px solid #eee;
-	@media ${device.mobileS} {
-		width: 100%;
-	}
-	@media ${device.laptop} {
-		width: 80%;
-	}
+  padding: 5px;
+  margin: 10px 0;
+  border: 0;
+  border-bottom: 2px solid #eee;
+  @media ${device.mobileS} {
+    width: 100%;
+  }
+  @media ${device.laptop} {
+    width: 80%;
+  }
 `;
 const AuthbaseInputStyles = css`
-	position: absolute;
-	display: flex;
-	flex-direction: row;
-	flex-wrap: wrap;
+  position: absolute;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
 `;
 const fadeIn = keyframes`
     from {top: -10px;opacity:0}
     to {top: 30px; opacity: 1}
 `;
 const selectStyles = css`
-	cursor: pointer;
-	background: url(${ArrowDown}) 99% / 3% no-repeat;
+  cursor: pointer;
+  background: url(${ArrowDown}) 99% / 3% no-repeat;
 `;
 export const Img = Styled.img`
     height: auto;
@@ -186,7 +186,7 @@ export const Formdiv = Styled.div`
         order:1;
         width: 100%;
         padding-left:7%;
-        margin-bottom:60px;
+        margin:0
     }
     @media${device.laptop} {
         order:0;
