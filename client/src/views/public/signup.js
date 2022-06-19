@@ -82,7 +82,7 @@ export const SignUp = (props) => {
           <form>
             <div>
               <div style={{ margin: "2rem" }}>
-                <p>Want to join as:</p>
+                <p>Want to join as a:</p>
                 <Styled.SelectField setGroup={setGroup} selected={groupLevel} />
               </div>
 
@@ -118,6 +118,17 @@ export const SignUp = (props) => {
             <button data-testid="submit-button" onClick={(e) => PostSignup(e)}>
               Apply to Join {loading ? "..." : null}
             </button>
+            <div>
+              Already has an account?
+              <div style={{ display: "flex", justifyContent: "space-evenly" }}>
+                <span>
+                  <a href="/auth/log-in/vet">Vet Log In</a>
+                </span>
+                <span>
+                  <a href="/auth/log-in/client">Client Log In</a>
+                </span>
+              </div>
+            </div>
           </form>
           <utils.ViewErrorMessage />
         </Styled.Formdiv>
