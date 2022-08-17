@@ -1,10 +1,18 @@
 # Vet Health 
- it is  a web based system that connect livestock farmer to vet services. Backend done in TDD
+ It is  a web-based system that connect livestock farmer to vet services.
+ Backend API endpoints are done using TDD using Jest.<br>
+ Vet are assigned according to the  their previous ratings, nearness to client(currently done at 6 km proximity) and area of specialization. <br>
+ Vet have a dashboard where they  are prompted to accept system assigned tasks. They can also manage all the accepted jobs at their dashboards.
+ ## Technologies
+ - Node.js
+ - MongoDB
+ - Experssjs
+ - Mongoose
+ - Jest
+ - Sendgrid for email sending
+ - Lipa na Mpesa(local mobile money transfer platform).
 ## Home page
-![](Data/screenshots/Screenshot%202021-07-26%20120302.png "The overall Home page of the application")
-
-## Client Home Page
-![](Data/screenshots/Screenshot%202021-07-26%20120419.png "The client home page")
+![homepage](https://user-images.githubusercontent.com/55924723/185065517-78b9ab18-49d2-489d-b878-6fbef975212c.png)
 
 ## Validation in the sign-up and login page
 ![Error_handling](https://user-images.githubusercontent.com/55924723/185060404-5f3c768a-42b5-4748-822b-747071489a77.png)
@@ -12,14 +20,13 @@
 ## Validation in the user Request form
 ![validation_of_the_user_input](https://user-images.githubusercontent.com/55924723/185060671-59133ed9-958f-42e3-9805-fa2bfa2a4d01.png)
 
-## Automative client location or manual picking picking after request form submission
+## Automati client location or manual picking picking after request form submission.
 ![automatic_location_pic_or_manual](https://user-images.githubusercontent.com/55924723/185060925-f65d3d2c-6717-4070-a103-ef09ff4bd491.png)
 
 ## Client being shown the status of different jobs posted when clicking the request timeline
 ![showing_job_client_request](https://user-images.githubusercontent.com/55924723/185061803-15f2f18d-e1fd-44ae-9931-de150f70f02f.png)
 
-
-## Validation in the vet detail creation of updation form. By default show a map to the client location in the buttom.
+## Validation in the vet detail creation or  updation form. By default shown a map of the client location at the bottom.
 ![input_validation](https://user-images.githubusercontent.com/55924723/185062200-efbb50f2-93d0-468d-90db-7e68fb7e080a.png)
 
 ## Vet being prompted to accept the system assigned task
