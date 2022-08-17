@@ -20,7 +20,7 @@
 ## Validation in the user Request form
 ![validation_of_the_user_input](https://user-images.githubusercontent.com/55924723/185060671-59133ed9-958f-42e3-9805-fa2bfa2a4d01.png)
 
-## Automati client location or manual picking picking after request form submission.
+## Automatic client location or manual picking after request form submission.
 ![automatic_location_pic_or_manual](https://user-images.githubusercontent.com/55924723/185060925-f65d3d2c-6717-4070-a103-ef09ff4bd491.png)
 
 ## Client being shown the status of different jobs posted when clicking the request timeline
